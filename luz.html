@@ -50,7 +50,7 @@
         </div>
         <button id="btnLimparDB" class="btn btn-outline btn-error p-1 rounded text-white mb-2 md:mb-0">Limpar Imagem</button>
         <button id="btnInverter" class="bg-neutral-focus text-white p-1 rounded mb-2 md:mb-0">Inverter</button>
-        <button id="btnTrancar" class="bg-neutral-focus p-1 rounded mb-2 md:mb-0" style="font-size: 2rem;">🔒</button>
+        <button id="btnTrancar" class="bg-neutral-focus p-1 rounded mb-2 md:mb-0" style="font-size: 2remtat;">🔒</button>
     </div>
 </div>
 
@@ -60,7 +60,7 @@
     >
       <img
         id="imagem"
-        src="desenho.png"
+        src="tatu.png"
         alt="Imagem para desenho"
         draggable="false"
       />
@@ -177,7 +177,7 @@ document.addEventListener('touchend', function() {
 
             request.onsuccess = function() {
                 alert('Imagem removida com sucesso!');
-                imagem.src = "desenho.png"; // Resetando para a imagem padrão
+                imagem.src = "tatu.png"; // Resetando para a imagem padrão
             };
 
             request.onerror = function() {

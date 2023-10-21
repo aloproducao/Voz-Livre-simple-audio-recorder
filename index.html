@@ -4,10 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VozLivre: Gravador de Áudio Móvel Sem Anúncios</title>
+    <link rel="manifest" href="manifest.json">
 
     <!-- Meta tags de SEO -->
-    <meta name="description" content="Gravador de áudio móvel sem anúncios, ideal para produções ao vivo e gravações diárias." />
-    <meta name="keywords" content="gravador, áudio, móvel, sem anúncios, produção ao vivo, gravações diárias, VozLivre, Miguel Kallemback" />
+    <meta
+      name="description"
+      content="Gravador de áudio móvel sem anúncios, ideal para produções ao vivo e gravações diárias."
+    />
+    <meta
+      name="keywords"
+      content="gravador, áudio, móvel, sem anúncios, produção ao vivo, gravações diárias, VozLivre, Miguel Kallemback"
+    />
 
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@3.9.3/dist/full.css"
@@ -40,13 +47,11 @@
       <!-- Coluna Direita - Controles e Listagem -->
       <div class="flex-grow">
         <div class="text-center">
-            <div class="flex items-center justify-center space-x-2 mb-4">
-                
-                <img src="logo.png"  alt="Ícone Voz Livre" class="icon">
-            </div>
-            <div id="recordingDuration" class="text-center mb-4">00:00</div>
+          <div class="flex items-center justify-center space-x-2 mb-4">
+            <img src="logo.png" alt="Ícone Voz Livre" class="icon" />
+          </div>
+          <div id="recordingDuration" class="text-center mb-4">00:00</div>
         </div>
-
 
         <div class="mb-4">
           <label for="microphoneSelect" class="block mb-2"
@@ -59,11 +64,11 @@
           <button id="deleteAllButton" class="btn btn-error w-full">
             Apagar Todas Gravações
           </button>
-          <div class="flex  items-center justify-center space-x-4 mb-4 ">
-            <input type="checkbox" id="noiseReduction"  />
+          <div class="flex items-center justify-center space-x-4 mb-4">
+            <input type="checkbox" id="noiseReduction" />
             <label for="noiseReduction">Redução de Ruído</label>
 
-            <input type="checkbox" id="echoCancellation"  />
+            <input type="checkbox" id="echoCancellation" />
             <label for="echoCancellation">Cancelamento de Eco</label>
           </div>
         </div>
@@ -77,13 +82,32 @@
 
         <h2 class="text-xl mb-4 font-semibold text-center">Gravações:</h2>
         <ul id="recordingsList" class="space-y-2"></ul>
-        <br><br><br><br><br>
-       <center> <p> Feito com ❤️ por <a target="_blank" href="https://wa.me/5521989328845?text=Olá%20gostaria%20de%20saber%20mais%20sobre%20serviços%20de%20TI" >Miguel Kallemback</a></p>
-       </center>
+        <br /><br /><br /><br /><br />
+        <center>
+          <p>
+            Feito com ❤️ por
+            <a
+              target="_blank"
+              href="https://wa.me/5521989328845?text=Olá%20gostaria%20de%20saber%20mais%20sobre%20serviços%20de%20TI"
+              >Miguel Kallemback</a
+            >
+          </p>
+        </center>
       </div>
-      
     </div>
 
     <script src="script.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+        .then((registration) => {
+          console.log('Service Worker registrado com sucesso:', registration);
+        })
+        .catch((error) => {
+          console.log('Erro ao registrar o Service Worker:', error);
+        });
+      }
+    </script>
+    
   </body>
 </html>

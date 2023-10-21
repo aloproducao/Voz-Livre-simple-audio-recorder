@@ -4,10 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mesa de Luz para Desenho</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.3/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     <style>
       body {
         background-color: #ffffff;
@@ -30,40 +29,31 @@
   <body
     class="flex flex-col items-center justify-center h-screen overflow-hidden"
   >
-    <div
-      class="w-full p-4 bg-gray-700 fixed top-0 left-0 flex justify-between items-center z-10"
-    >
-      <input type="file" id="fileInput" />
-      <div class="flex items-center">
-        <label for="zoomRange" class="mr-2 text-white">Zoom:</label>
-        <input
-          type="range"
-          id="zoomRange"
-          min="1"
-          max="3"
-          step="0.01"
-          value="1"
-          class="mr-2"
-        />
-        <label for="opacityRange" class="mr-2 text-white">Opacidade:</label>
-        <input
-          type="range"
-          id="opacityRange"
-          min="0"
-          max="1"
-          step="0.01"
-          value="0.5"
-          class="mr-4"
-        />
-        <button id="btnLimparDB" class="bg-red-500 p-1 rounded mr-2 text-white">
-          Limpar Imagem
-        </button>
-        <button id="btnInverter" class="bg-white p-1 rounded mr-2">
-          Inverter
-        </button>
-        <button id="btnTrancar" class="bg-white p-1 rounded">🔒</button>
-      </div>
+  <div class="w-full p-2 md:p-4 bg-neutral fixed top-0 left-0 flex flex-wrap justify-between items-center z-10">
+    <div class="mb-2 md:mb-0">
+        <label for="fileInput" class="btn btn-outline btn-warning text-white p-1 rounded cursor-pointer">
+            Carregar Imagem
+        </label>
+        <input type="file" id="fileInput" class="hidden" />
+        
     </div>
+    <div class="flex items-center flex-wrap space-x-2">
+        <div class="flex items-center mb-2 md:mb-0 space-x-2">
+            <button id="btnTelaCheia" class="btn btn-outline btn-accent p-1 rounded text-white mb-2 md:mb-0">Tela Cheia</button>
+            <label for="zoomRange" class="text-white">Zoom:</label>
+            <input type="range" id="zoomRange" min="1" max="3" step="0.01" value="1" class="mr-2">
+        </div>
+      
+        <div class="flex items-center mb-2 md:mb-0 space-x-2">
+            <label for="opacityRange" class="text-white">Opacidade:</label>
+            <input type="range" id="opacityRange" min="0" max="1" step="0.01" value="0.5">
+        </div>
+        <button id="btnLimparDB" class="btn btn-outline btn-error p-1 rounded text-white mb-2 md:mb-0">Limpar Imagem</button>
+        <button id="btnInverter" class="bg-neutral-focus text-white p-1 rounded mb-2 md:mb-0">Inverter</button>
+        <button id="btnTrancar" class="bg-neutral-focus p-1 rounded mb-2 md:mb-0" style="font-size: 2rem;">🔒</button>
+    </div>
+</div>
+
     <div
       class="mt-20 relative w-full h-full flex items-center justify-center"
       id="imageContainer"
@@ -194,6 +184,17 @@ document.addEventListener('touchend', function() {
                 alert('Erro ao remover imagem.');
             };
         });
+        const btnTelaCheia = document.getElementById('btnTelaCheia');
+
+btnTelaCheia.addEventListener('click', function() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+});
 
       document.addEventListener("mousemove", function (event) {
         if (isMoving) {

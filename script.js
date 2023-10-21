@@ -163,6 +163,8 @@ function listRecordings() {
     let store = transaction.objectStore("recordings");
     let cursorRequest = store.openCursor();
 
+    let lastItem; // Variável para armazenar o último item
+
     cursorRequest.onsuccess = function(event) {
         let cursor = event.target.result;
         if (cursor) {
@@ -235,7 +237,14 @@ function listRecordings() {
 
             recordingsList.appendChild(listItem);
 
+            lastItem = listItem; // Atualize o último item
+
             cursor.continue();
+        } else {
+            // Depois que todos os itens forem listados, destaque o último item
+            if (lastItem) {
+                lastItem.classList.add("recent-item");
+            }
         }
     };
 }

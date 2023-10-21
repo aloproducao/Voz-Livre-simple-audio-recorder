@@ -25,7 +25,7 @@ body {
 }
 #principal{
     max-width: 600px;
-    background-color: #0e0e0ef3;
+    background-color: #0e0e0ede;
     border-radius: 40px;
 }
 #recordingDuration{
@@ -35,4 +35,8 @@ body {
 .icon{
     height: 10em; 
     
+}
+.recent-item {
+    padding: 500px;
+    background-color: rgba(255, 0, 0, 0.74); /* Um fundo levemente mais escuro para destacar */
 }

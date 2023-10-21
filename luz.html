@@ -2,7 +2,7 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mesa de Luz para Desenho</title>
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
@@ -141,6 +141,30 @@
           imagem.style.transform = `scaleX(-1) ${imagem.style.transform}`;
         }
       });
+
+      let initialTouchX, initialTouchY;
+
+imagem.addEventListener('touchstart', function(event) {
+    if (!imagem.classList.contains('locked')) {
+        isMoving = true;
+        initialTouchX = event.touches[0].clientX - offsetX;
+        initialTouchY = event.touches[0].clientY - offsetY;
+    }
+}, { passive: true });
+
+document.addEventListener('touchmove', function(event) {
+    if (isMoving) {
+        offsetX = event.touches[0].clientX - initialTouchX;
+        offsetY = event.touches[0].clientY - initialTouchY;
+        imagem.style.left = offsetX + 'px';
+        imagem.style.top = offsetY + 'px';
+    }
+}, { passive: true });
+
+document.addEventListener('touchend', function() {
+    isMoving = false;
+});
+
 
       let isMoving = false;
       let initialX,

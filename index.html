@@ -27,10 +27,7 @@
 
   <body
     class="bg-gray-900 text-white flex items-center justify-center min-h-screen"
-  ><div id="installBanner" style="display: none; background-color: #333; padding: 10px; text-align: center;">
-    <p>Deseja instalar este aplicativo em seu dispositivo?</p>
-    <button onclick="installApp()">Instalar</button>
-  </div>
+  >
   
     <div
       id="principal"
@@ -52,6 +49,10 @@
       <div class="flex-grow">
         <div class="text-center">
           <div class="flex items-center justify-center space-x-2 mb-4">
+            <div id="installBanner" style="display: none; background-color: #333; padding: 10px; text-align: center;">
+              <p>Deseja instalar este aplicativo em seu dispositivo?</p>
+              <button onclick="installApp()">Instalar</button>
+            </div>
             <img src="logo.png" alt="Ícone Voz Livre" class="icon" />
           </div>
           <div id="recordingDuration" class="text-center mb-4">00:00</div>

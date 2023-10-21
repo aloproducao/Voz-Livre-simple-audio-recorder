@@ -209,15 +209,20 @@ btnTelaCheia.addEventListener('click', function() {
         isMoving = false;
       });
 
-      btnTrancar.addEventListener("click", () => {
-        if (imagem.classList.contains("locked")) {
-          imagem.classList.remove("locked");
-          alert("Movimentos e cliques desbloqueados!");
-        } else {
-          imagem.classList.add("locked");
-          alert("Movimentos e cliques bloqueados!");
-        }
-      });
+      const navbar = document.querySelector('.bg-neutral');
+
+btnTrancar.addEventListener("click", () => {
+  if (imagem.classList.contains("locked")) {
+    imagem.classList.remove("locked");
+    navbar.classList.remove("bg-red-600");
+    navbar.classList.add("bg-neutral");
+  } else {
+    imagem.classList.add("locked");
+    navbar.classList.remove("bg-neutral");
+    navbar.classList.add("bg-red-600");
+  }
+});
+
 
       document.body.addEventListener('touchmove', function(event) {
             if (imagem.classList.contains("locked")) {

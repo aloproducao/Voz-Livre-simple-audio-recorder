@@ -232,6 +232,12 @@ function deleteAllRecordings() {
     };
 }
 
+navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+    console.log("Permissão ao microfone concedida");
+}).catch((err) => {
+    console.error("Acesso ao microfone foi negado:", err);
+});
+
 function deleteRecording(id) {
     let transaction = db.transaction(["recordings"], "readwrite");
     let store = transaction.objectStore("recordings");

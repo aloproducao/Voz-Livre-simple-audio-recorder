@@ -27,7 +27,10 @@
 
   <body
     class="bg-gray-900 text-white flex items-center justify-center min-h-screen"
-  >
+  ><div id="installBanner" style="display: none; background-color: #333; padding: 10px; text-align: center;">
+    <p>Deseja instalar este aplicativo em seu dispositivo?</p>
+    <button onclick="installApp()">Instalar</button>
+  </div>
   
     <div
       id="principal"
@@ -48,12 +51,7 @@
       <!-- Coluna Direita - Controles e Listagem -->
       <div class="flex-grow">
         <div class="text-center">
-          <div id="installBanner" style="display: none; background-color: #333; border-radius: 30px; padding: 10px; text-align: center;">
-            <p>Deseja instalar o app ?</p>
-            <button onclick="installApp()">Clique aqui</button>
-          </div>
           <div class="flex items-center justify-center space-x-2 mb-4">
-            
             <img src="logo.png" alt="Ícone Voz Livre" class="icon" />
           </div>
           <div id="recordingDuration" class="text-center mb-4">00:00</div>
@@ -113,43 +111,7 @@
           console.log('Erro ao registrar o Service Worker:', error);
         });
       }
-
-
-      let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (event) => {
-  // Evita que o prompt de instalação seja mostrado automaticamente pelo navegador
-  event.preventDefault();
-
-  // Salva o evento para ser usado posteriormente
-  deferredPrompt = event;
-
-  // Mostra o banner personalizado
-  showInstallBanner();
-});
-
-function showInstallBanner() {
-  // Aqui, você pode adicionar o código para mostrar o banner ou botão personalizado.
-  // Por exemplo, tornar um elemento "div" visível na página.
-  let installBanner = document.getElementById('installBanner');
-  installBanner.style.display = 'block';
-}
-
-function installApp() {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('Usuário aceitou a instalação');
-      } else {
-        console.log('Usuário recusou a instalação');
-      }
-      deferredPrompt = null;
-    });
-  }
-}
-
+      
     </script>
     
   </body>

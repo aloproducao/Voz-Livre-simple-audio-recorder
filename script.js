@@ -15,22 +15,32 @@ document.getElementById("microphoneSelect").addEventListener("change", (event) =
 document.getElementById("recordButton").addEventListener("click", startRecording);
 document.getElementById("stopButton").addEventListener("click", stopRecording);
 
-navigator.mediaDevices.enumerateDevices().then((devices) => {
-    let micSelect = document.getElementById("microphoneSelect");
-    devices.forEach((device, index) => {
-        if (device.kind === "audioinput") {
-            let option = document.createElement("option");
-            option.value = device.deviceId;
-            option.innerText = device.label || "Microfone " + (micSelect.length + 1);
-            micSelect.appendChild(option);
+function populateMicrophoneList() {
+    navigator.mediaDevices.enumerateDevices().then((devices) => {
+        let micSelect = document.getElementById("microphoneSelect");
+        micSelect.innerHTML = ""; // Limpa a lista atual de dispositivos
+        devices.forEach((device, index) => {
+            if (device.kind === "audioinput") {
+                let option = document.createElement("option");
+                option.value = device.deviceId;
+                option.innerText = device.label || "Microfone " + (micSelect.length + 1);
+                micSelect.appendChild(option);
 
-            // Define o primeiro microfone como o padrão
-            if (index === 0) {
-                selectedMic = device.deviceId;
-                micSelect.value = selectedMic;
+                // Define o primeiro microfone como o padrão
+                if (index === 0) {
+                    selectedMic = device.deviceId;
+                    micSelect.value = selectedMic;
+                }
             }
-        }
+        });
     });
+}
+
+navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+    console.log("Permissão ao microfone concedida");
+    populateMicrophoneList(); // Atualiza a lista de dispositivos após a permissão ser concedida
+}).catch((err) => {
+    console.error("Acesso ao microfone foi negado:", err);
 });
 
 function saveRecording(blob) {
@@ -232,11 +242,6 @@ function deleteAllRecordings() {
     };
 }
 
-navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-    console.log("Permissão ao microfone concedida");
-}).catch((err) => {
-    console.error("Acesso ao microfone foi negado:", err);
-});
 
 function deleteRecording(id) {
     let transaction = db.transaction(["recordings"], "readwrite");

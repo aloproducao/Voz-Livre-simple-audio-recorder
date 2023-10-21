@@ -1,6 +1,7 @@
 
 
 # VozLivre
+![logo](https://github.com/aloproducao/Voz-Livre/assets/43450424/a1f2d604-59e4-4948-abe9-102260841d21)
 
 ## Description
 

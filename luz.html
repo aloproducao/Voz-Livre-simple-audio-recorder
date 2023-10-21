@@ -1,143 +1,204 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mesa de Luz para Desenho</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            background-color: #ffffff;
-        }
+      body {
+        background-color: #ffffff;
+      }
 
-        #imagem {
-            max-height: 80vh;
-            max-width: 80vw;
-            transform-origin: center;
-            cursor: move;
-            position: relative;
-        }
+      #imagem {
+        max-height: 80vh;
+        max-width: 80vw;
+        transform-origin: center;
+        cursor: move;
+        position: relative;
+      }
 
-        .locked {
-            pointer-events: none;
-        }
+      .locked {
+        pointer-events: none;
+      }
     </style>
-</head>
+  </head>
 
-<body class="flex flex-col items-center justify-center h-screen overflow-hidden">
-    <div class="w-full p-4 bg-gray-700 fixed top-0 left-0 flex justify-between items-center z-10">
-        <input type="file" id="fileInput">
-        <div class="flex items-center">
-            <label for="zoomRange" class="mr-2 text-white">Zoom:</label>
-            <input type="range" id="zoomRange" min="1" max="3" step="0.01" value="1" class="mr-2">
-            <label for="opacityRange" class="mr-2 text-white">Opacidade:</label>
-            <input type="range" id="opacityRange" min="0" max="1" step="0.01" value="0.5" class="mr-4">
-            <button id="btnInverter" class="bg-white p-1 rounded mr-2">Inverter</button>
-            <button id="btnTrancar" class="bg-white p-1 rounded">🔒</button>
-        </div>
+  <body
+    class="flex flex-col items-center justify-center h-screen overflow-hidden"
+  >
+    <div
+      class="w-full p-4 bg-gray-700 fixed top-0 left-0 flex justify-between items-center z-10"
+    >
+      <input type="file" id="fileInput" />
+      <div class="flex items-center">
+        <label for="zoomRange" class="mr-2 text-white">Zoom:</label>
+        <input
+          type="range"
+          id="zoomRange"
+          min="1"
+          max="3"
+          step="0.01"
+          value="1"
+          class="mr-2"
+        />
+        <label for="opacityRange" class="mr-2 text-white">Opacidade:</label>
+        <input
+          type="range"
+          id="opacityRange"
+          min="0"
+          max="1"
+          step="0.01"
+          value="0.5"
+          class="mr-4"
+        />
+        <button id="btnLimparDB" class="bg-red-500 p-1 rounded mr-2 text-white">
+          Limpar Imagem
+        </button>
+        <button id="btnInverter" class="bg-white p-1 rounded mr-2">
+          Inverter
+        </button>
+        <button id="btnTrancar" class="bg-white p-1 rounded">🔒</button>
+      </div>
     </div>
-    <div class="mt-20 relative w-full h-full flex items-center justify-center" id="imageContainer">
-        <img id="imagem" src="" alt="Imagem para desenho" draggable="false">
+    <div
+      class="mt-20 relative w-full h-full flex items-center justify-center"
+      id="imageContainer"
+    >
+      <img
+        id="imagem"
+        src="desenho.png"
+        alt="Imagem para desenho"
+        draggable="false"
+      />
     </div>
     <script>
-              const imagem = document.getElementById('imagem');
-        const imageContainer = document.getElementById('imageContainer');
-        const zoomRange = document.getElementById('zoomRange');
-        const opacityRange = document.getElementById('opacityRange');
-        const btnInverter = document.getElementById('btnInverter');
-        const btnTrancar = document.getElementById('btnTrancar');
-        const fileInput = document.getElementById('fileInput');
-        // Configurando IndexedDB
-        let db;
-        const request = indexedDB.open("MesaDeLuzDB", 1);
-        request.onupgradeneeded = function (event) {
-            db = event.target.result;
-            let objectStore = db.createObjectStore("imagens", { keyPath: "id" });
-            objectStore.createIndex("imagem", "imagem", { unique: false });
-        };
+      const imagem = document.getElementById("imagem");
+      const btnLimparDB = document.getElementById("btnLimparDB");
+      const imageContainer = document.getElementById("imageContainer");
+      const zoomRange = document.getElementById("zoomRange");
+      const opacityRange = document.getElementById("opacityRange");
+      const btnInverter = document.getElementById("btnInverter");
+      const btnTrancar = document.getElementById("btnTrancar");
+      const fileInput = document.getElementById("fileInput");
+      // Configurando IndexedDB
+      let db;
+      const request = indexedDB.open("MesaDeLuzDB", 1);
+      request.onupgradeneeded = function (event) {
+        db = event.target.result;
+        let objectStore = db.createObjectStore("imagens", { keyPath: "id" });
+        objectStore.createIndex("imagem", "imagem", { unique: false });
+      };
 
+      request.onsuccess = function (event) {
+        db = event.target.result;
+        carregarImagemDoDB();
+      };
+
+      function carregarImagemDoDB() {
+        const transaction = db.transaction(["imagens"]);
+        const objectStore = transaction.objectStore("imagens");
+        const request = objectStore.get(1);
         request.onsuccess = function (event) {
-            db = event.target.result;
-            carregarImagemDoDB();
+          if (request.result) {
+            imagem.src = request.result.imagem;
+          }
         };
+      }
 
-        function carregarImagemDoDB() {
-            const transaction = db.transaction(["imagens"]);
+      fileInput.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            const transaction = db.transaction(["imagens"], "readwrite");
             const objectStore = transaction.objectStore("imagens");
-            const request = objectStore.get(1);
-            request.onsuccess = function (event) {
-                if (request.result) {
-                    imagem.src = request.result.imagem;
-                }
-            };
+            objectStore.put({ id: 1, imagem: event.target.result });
+            imagem.src = event.target.result;
+          };
+          reader.readAsDataURL(file);
         }
+      });
 
-        fileInput.addEventListener('change', function () {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (event) {
-                    const transaction = db.transaction(["imagens"], "readwrite");
-                    const objectStore = transaction.objectStore("imagens");
-                    objectStore.put({ id: 1, imagem: event.target.result });
-                    imagem.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
+      zoomRange.addEventListener("input", function () {
+        imagem.style.transform = `scale(${this.value})`;
+      });
+
+      opacityRange.addEventListener("input", function () {
+        imagem.style.opacity = this.value;
+      });
+
+      btnInverter.addEventListener("click", () => {
+        if (imagem.style.transform.includes("scaleX(-1)")) {
+          imagem.style.transform = imagem.style.transform.replace(
+            "scaleX(-1)",
+            "scaleX(1)"
+          );
+        } else {
+          imagem.style.transform = `scaleX(-1) ${imagem.style.transform}`;
+        }
+      });
+
+      let isMoving = false;
+      let initialX,
+        initialY,
+        offsetX = 0,
+        offsetY = 0;
+
+      imagem.addEventListener("mousedown", function (event) {
+        if (!imagem.classList.contains("locked")) {
+          isMoving = true;
+          initialX = event.clientX - offsetX;
+          initialY = event.clientY - offsetY;
+        }
+      });
+
+      btnLimparDB.addEventListener('click', function() {
+            const transaction = db.transaction(["imagens"], "readwrite");
+            const objectStore = transaction.objectStore("imagens");
+            const request = objectStore.clear(); // Limpa todos os dados do object store
+
+            request.onsuccess = function() {
+                alert('Imagem removida com sucesso!');
+                imagem.src = "desenho.png"; // Resetando para a imagem padrão
+            };
+
+            request.onerror = function() {
+                alert('Erro ao remover imagem.');
+            };
+        });
+
+      document.addEventListener("mousemove", function (event) {
+        if (isMoving) {
+          offsetX = event.clientX - initialX;
+          offsetY = event.clientY - initialY;
+          imagem.style.left = offsetX + "px";
+          imagem.style.top = offsetY + "px";
+        }
+      });
+
+      document.addEventListener("mouseup", function () {
+        isMoving = false;
+      });
+
+      btnTrancar.addEventListener("click", () => {
+        if (imagem.classList.contains("locked")) {
+          imagem.classList.remove("locked");
+          alert("Movimentos e cliques desbloqueados!");
+        } else {
+          imagem.classList.add("locked");
+          alert("Movimentos e cliques bloqueados!");
+        }
+      });
+
+      document.body.addEventListener('touchmove', function(event) {
+            if (imagem.classList.contains("locked")) {
+                event.preventDefault();
             }
-        });
-
-        zoomRange.addEventListener('input', function() {
-            imagem.style.transform = `scale(${this.value})`;
-        });
-
-        opacityRange.addEventListener('input', function() {
-            imagem.style.opacity = this.value;
-        });
-
-        btnInverter.addEventListener('click', () => {
-            if (imagem.style.transform.includes('scaleX(-1)')) {
-                imagem.style.transform = imagem.style.transform.replace('scaleX(-1)', 'scaleX(1)');
-            } else {
-                imagem.style.transform = `scaleX(-1) ${imagem.style.transform}`;
-            }
-        });
-
-        let isMoving = false;
-        let initialX, initialY, offsetX = 0, offsetY = 0;
-
-        imagem.addEventListener('mousedown', function(event) {
-            if(!imagem.classList.contains('locked')) {
-                isMoving = true;
-                initialX = event.clientX - offsetX;
-                initialY = event.clientY - offsetY;
-            }
-        });
-
-        document.addEventListener('mousemove', function(event) {
-            if(isMoving) {
-                offsetX = event.clientX - initialX;
-                offsetY = event.clientY - initialY;
-                imagem.style.left = offsetX + 'px';
-                imagem.style.top = offsetY + 'px';
-            }
-        });
-
-        document.addEventListener('mouseup', function() {
-            isMoving = false;
-        });
-
-        btnTrancar.addEventListener('click', () => {
-            if (imagem.classList.contains('locked')) {
-                imagem.classList.remove('locked');
-                alert('Movimentos e cliques desbloqueados!');
-            } else {
-                imagem.classList.add('locked');
-                alert('Movimentos e cliques bloqueados!');
-            }
-        });
-
+        }, { passive: false });
     </script>
-</body>
-
+  </body>
 </html>

@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-image: url('fundook.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover; /* Isso garantirá que a imagem cubra toda a área visível */
+
+}
+
+#vuMeterContainer {
+    height: 500px;
+    width: 30px;
+    background-color: #e0e0e0;
+    position: block;
+    margin-top: 20px;
+}
+
+#vuMeter {
+    height: 0%;
+    background-color: #4CAF50;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+#principal{
+    max-width: 600px;
+}
+#recordingDuration{
+    color: #ffae00;
+    font-size: 2.4rem;
+}
+.icon{
+    height: 10em; 
+    
+}

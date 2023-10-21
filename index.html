@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gravador de Áudio</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@3.9.3/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body
+    class="bg-gray-900 text-white flex items-center justify-center min-h-screen"
+  >
+    <div
+      id="principal"
+      class="container bg-gray-800 p-5 rounded-lg shadow-lg flex space-x-3"
+    >
+      <br />
+      <!-- Coluna Esquerda - VU Meter -->
+      <div
+        id="vuMeterContainer"
+        class="relative w-full h-4 mb-4 bg-gray-700 rounded"
+      >
+        <div
+          id="vuMeter"
+          class="absolute left-0 h-full bg-red-600 rounded-r"
+        ></div>
+      </div>
+
+      <!-- Coluna Direita - Controles e Listagem -->
+      <div class="flex-grow">
+        <div class="text-center">
+            <div class="flex items-center justify-center space-x-2 mb-4">
+                
+                <img src="logo.png"  alt="Ícone Voz Livre" class="icon">
+            </div>
+            <div id="recordingDuration" class="text-center mb-4">00:00</div>
+        </div>
+
+
+        <div class="mb-4">
+          <label for="microphoneSelect" class="block mb-2"
+            >Selecionar Microfone:</label
+          >
+          <select
+            id="microphoneSelect"
+            class="w-full p-2 rounded bg-gray-700 mb-4"
+          ></select>
+          <button id="deleteAllButton" class="btn btn-error w-full">
+            Apagar Todas Gravações
+          </button>
+          <div class="flex  items-center justify-center space-x-4 mb-4 ">
+            <input type="checkbox" id="noiseReduction"  />
+            <label for="noiseReduction">Redução de Ruído</label>
+
+            <input type="checkbox" id="echoCancellation"  />
+            <label for="echoCancellation">Cancelamento de Eco</label>
+          </div>
+        </div>
+
+        <div class="flex space-x-4 mb-4">
+          <button id="recordButton" class="btn btn-primary w-1/2">
+            Iniciar
+          </button>
+          <button id="stopButton" class="btn w-1/2" disabled>Parar</button>
+        </div>
+
+        <h2 class="text-xl mb-4 font-semibold text-center">Gravações:</h2>
+        <ul id="recordingsList" class="space-y-2"></ul>
+        <br><br><br><br><br>
+       <center> <p> Feito com ❤️ por <a target="_blank" href="https://wa.me/5521989328845?text=Olá%20gostaria%20de%20saber%20mais%20sobre%20serviços%20de%20TI" >Miguel Kallemback</a></p>
+       </center>
+      </div>
+      
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

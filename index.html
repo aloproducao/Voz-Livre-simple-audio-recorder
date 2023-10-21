@@ -48,11 +48,12 @@
       <!-- Coluna Direita - Controles e Listagem -->
       <div class="flex-grow">
         <div class="text-center">
+          <div id="installBanner" style="display: none; background-color: #333; padding: 10px; text-align: center;">
+            <p>Deseja instalar este aplicativo em seu dispositivo?</p>
+            <button onclick="installApp()">Instalar</button>
+          </div>
           <div class="flex items-center justify-center space-x-2 mb-4">
-            <div id="installBanner" style="display: none; background-color: #333; padding: 10px; text-align: center;">
-              <p>Deseja instalar este aplicativo em seu dispositivo?</p>
-              <button onclick="installApp()">Instalar</button>
-            </div>
+            
             <img src="logo.png" alt="Ícone Voz Livre" class="icon" />
           </div>
           <div id="recordingDuration" class="text-center mb-4">00:00</div>

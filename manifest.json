@@ -1,5 +1,5 @@
 {
-  "name": "Voz Livre",
+  "name": "Voz Livre - gravador de audio",
   "short_name": "Voz Livre",
   "description": "Um gravador de áudio PWA sem anúncios, ideal para uso no dia a dia de produção ao vivo.",
   "start_url": "/",

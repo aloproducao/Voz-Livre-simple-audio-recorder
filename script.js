@@ -178,7 +178,7 @@ function listRecordings() {
       let listItem = document.createElement("tr");
 
       let nameCell = document.createElement("td");
-      nameCell.textContent = "recording" + id + ".wav";
+      nameCell.textContent = "rec" + id + ".wav";
       listItem.appendChild(nameCell);
 
       let actionCell = document.createElement("td");
@@ -219,10 +219,10 @@ function listRecordings() {
         }
         audio = new Audio(URL.createObjectURL(recording));
         playButton.disabled = true;
-        playButton.textContent = "Reproduzindo...";
+        playButton.textContent = "⏯";
         audio.onended = function () {
           playButton.disabled = false;
-          playButton.textContent = "Reproduzir";
+          playButton.textContent = "▶️";
         };
         audio.play();
       });
@@ -232,14 +232,14 @@ function listRecordings() {
           audio.pause();
           audio.currentTime = 0;
           playButton.disabled = false;
-          playButton.textContent = "Reproduzir";
+          playButton.textContent = "▶️";
         }
       });
 
       downloadButton.addEventListener("click", () => {
         let a = document.createElement("a");
         a.href = URL.createObjectURL(recording);
-        a.download = "recording" + id + ".wav";
+        a.download = "rec" + id + ".wav";
         a.click();
       });
 
@@ -249,7 +249,7 @@ function listRecordings() {
 
       shareButton.addEventListener("click", () => {
         if (navigator.share) {
-          let file = new File([recording], "recording" + id + ".wav", {
+          let file = new File([recording], "rec" + id + ".wav", {
             type: "audio/wav",
           });
           navigator

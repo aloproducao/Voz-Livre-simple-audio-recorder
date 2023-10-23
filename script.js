@@ -256,7 +256,7 @@ function listRecordings() {
             .share({
               files: [file],
               title: "Compartilhar Gravação",
-              text: "Aqui está a gravação que fiz.",
+              text: "Aqui está a gravação que fiz. Pelo Voz Livre https://vozlivre.vercel.app/",
             })
             .catch((error) => console.error("Erro ao compartilhar:", error));
         } else {

@@ -48,4 +48,5 @@ body {
 #recordingsList {
   border-radius: 20px !important;
   background-color: rgba(129, 0, 0, 0.342) !important;
+  size-adjust: inherit !important;
 }

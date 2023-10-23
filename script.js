@@ -193,16 +193,16 @@ function listRecordings() {
 
       playButton.textContent = "▶️";
       playButton.className =
-        "border border-gray-300 text-gray-300 hover:bg-gray-700 mr-2 px-1 py-1 rounded";
+        "border border-gray-300 text-gray-300 hover:bg-gray-700 mr-1 px-1 py-1 rounded";
       stopButton.textContent = "⏹️";
       stopButton.className =
-        "border border-gray-300 text-gray-300 hover:bg-gray-700 mr-2 px-1 py-1 rounded";
+        "border border-gray-300 text-gray-300 hover:bg-gray-700 mr-1 px-1 py-1 rounded";
       downloadButton.textContent = "Baixar";
       downloadButton.className =
-        "border border-gray-300 text-gray-300 hover:bg-gray-700 mr-2 px-2 py-1 rounded";
+        "border border-gray-300 text-gray-300 hover:bg-gray-700 mr-1 px-1 py-1 rounded";
       deleteButton.textContent = "❌";
       deleteButton.className =
-        "border border-gray-300 text-gray-300 hover:bg-gray-700 px-2 py-1 rounded";
+        "border border-gray-300 text-gray-300 hover:bg-gray-700 px-1 py-1 rounded";
 
       let audio;
 

@@ -279,7 +279,7 @@ function listRecordings() {
     
 
       lastItem = listItem;
-      setTimeout(() => listItem.classList.add('show'), );
+      setTimeout(() => listItem.classList.add('show'), 20 );
       cursor.continue();
    
     } else {

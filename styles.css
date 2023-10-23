@@ -24,9 +24,30 @@ body {
 }
 #principal {
   margin: 1em;
+  max-width: 50em;
   background-color: #0e0e0ede;
   border-radius: 20px;
   padding: 1em;
+
+  box-shadow: -1px 1px 19px 0px #222222;
+  -webkit-box-shadow: -1px 1px 19px 0px #222222;
+  -moz-box-shadow: -1px 1px 19px 0px #222222;
+  transition: padding 0.3s ease; /* Para transições suaves ao redimensionar a tela */
+}
+
+/* Estilos para desktop */
+@media (min-width: 768px) {
+  /* Ajuste 768px conforme necessário, é um valor comum para tablets */
+  #principal {
+    padding: 2em; /* Maior padding para desktops */
+  }
+}
+
+/* Estilos para dispositivos móveis */
+@media (max-width: 767px) {
+  #principal {
+    padding: 1em; /* Padding padrão para dispositivos móveis */
+  }
 }
 #recordingDuration {
   color: #ffae00;
@@ -39,7 +60,12 @@ body {
   border-radius: 30px !important;
   font-weight: bolder;
   color: #00d9ff;
-  background-color: rgba(255, 0, 0, 0); /* Um fundo levemente mais escuro para destacar */
+  background-color: rgba(
+    255,
+    0,
+    0,
+    0
+  ); /* Um fundo levemente mais escuro para destacar */
 }
 .recent-item td:first-child::before {
   content: "🆕";
@@ -56,6 +82,12 @@ table {
   opacity: 0;
   transition: opacity 0.5s;
 }
+#recordingsList ul {
+  opacity: 0;
+  transition: 0.5s ease-in-out;
+  transition: padding 0.3s ease;
+}
 #recordingsList tr.show {
   opacity: 1;
+  transition: padding 0.3s ease;
 }

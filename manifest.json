@@ -4,8 +4,8 @@
   "description": "Um gravador de áudio PWA sem anúncios, ideal para uso no dia a dia de produção ao vivo.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#424242",
-  "theme_color": "#424242",
+  "background_color": "#1c3e49",
+  "theme_color": "#1c3e49",
   "icons": [
     {
       "src": "logo.png",

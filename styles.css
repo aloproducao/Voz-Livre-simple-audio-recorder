@@ -1,43 +1,51 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background-image: url('fundook.png');
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover; /* Isso garantirá que a imagem cubra toda a área visível */
-
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-image: url("fundook.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover; /* Isso garantirá que a imagem cubra toda a área visível */
 }
 
 #vuMeterContainer {
-    height: 100px;
-    width: 30px;
-    background-color: #e0e0e0;
-    position: block;
-    margin-top: 20px;
+  height: 100px;
+  width: 30px;
+  background-color: #e0e0e0;
+  position: block;
+  margin-top: 20px;
 }
 
 #vuMeter {
-    height: 0%;
-    background-color: #4CAF50;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
+  height: 0%;
+  background-color: #4caf50;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
 }
-#principal{
-    max-width: 600px;
-    background-color: #0e0e0ede;
-    border-radius: 40px;
+#principal {
+  max-width: 600px;
+  background-color: #0e0e0ede;
+  border-radius: 40px;
 }
-#recordingDuration{
-    color: #ffae00;
-    font-size: 2.4rem;
+#recordingDuration {
+  color: #ffae00;
+  font-size: 2.4rem;
 }
-.icon{
-    height: 10em; 
-    
+.icon {
+  height: 10em;
 }
 .recent-item {
-    padding: 500px;
-    border-radius: 30px !important;
-    background-color: rgba(255, 0, 0, 0.342); /* Um fundo levemente mais escuro para destacar */
+  border-radius: 30px !important;
+
+  background-color: rgba(
+    255,
+    0,
+    0,
+    0.418
+  ); /* Um fundo levemente mais escuro para destacar */
+}
+
+#recordingsList {
+  border-radius: 20px !important;
+  background-color: rgba(129, 0, 0, 0.342) !important;
 }

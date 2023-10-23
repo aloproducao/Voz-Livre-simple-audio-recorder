@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VozLivre: Gravador de Áudio Móvel Sem Anúncios</title>
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.json" />
 
     <!-- Meta tags de SEO -->
     <meta
@@ -25,72 +25,111 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
 
-<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
-    <div id="installBanner" style="display: none; background-color: #333; padding: 10px; text-align: center;">
-        <p>Deseja instalar este aplicativo em seu dispositivo?</p>
-        <button onclick="installApp()">Instalar</button>
+  <body
+    class="bg-gray-900 text-white flex items-center justify-center min-h-screen"
+  >
+    <div
+      id="installBanner"
+      style="
+        display: none;
+        background-color: #333;
+        padding: 10px;
+        text-align: center;
+      "
+    >
+      <p>Deseja instalar este aplicativo em seu dispositivo?</p>
+      <button onclick="installApp()">Instalar</button>
     </div>
 
-    <div id="principal" class="container  p-5 rounded-lg shadow-lg flex flex-col">
-        <!-- Seção do Logo e VU Meter -->
-        <div class="flex items-center justify-center space-x-4 mb-4">
-            <img src="logo.png" alt="Ícone Voz Livre" class="icon" />
+    <div
+      id="principal"
+      class="container p-5 rounded-lg shadow-lg flex flex-col"
+    >
+      <!-- Seção do Logo e VU Meter -->
+      <div class="flex items-center justify-center space-x-4 mb-4">
+        <img src="logo.png" alt="Ícone Voz Livre" class="icon" />
 
-            <!-- VU Meter -->
-            <div id="vuMeterContainer" class="relative w-1/4 h-4 bg-gray-700 rounded">
-                <div id="vuMeter" class="absolute left-0 h-full bg-red-600 rounded-r"></div>
-            </div>
+        <!-- VU Meter -->
+        <div
+          id="vuMeterContainer"
+          class="relative w-1/4 h-4 bg-gray-700 rounded"
+        >
+          <div
+            id="vuMeter"
+            class="absolute left-0 h-full bg-red-600 rounded-r"
+          ></div>
         </div>
-        <!-- Tempo de Gravação -->
-        <div id="recordingDuration" class="text-center mb-4">00:00</div>
-        <button class="btn glass w-1/2 text-white" style="color: white; display: none;" onclick="startAudioContext()">Iniciar VU</button>
+      </div>
+      <!-- Tempo de Gravação -->
+      <div id="recordingDuration" class="text-center mb-4">00:00</div>
+      <button
+        class="btn glass w-1/2 text-white"
+        style="color: white; display: none"
+        onclick="startAudioContext()"
+      >
+        Iniciar VU
+      </button>
 
-        <!-- Controles e Listagem -->
-        <div class="flex-grow">
-            <div class="mb-4">
-                <label for="microphoneSelect" class="block mb-2">Selecionar Microfone:</label>
-                <select id="microphoneSelect" class="w-full p-2 rounded bg-gray-700 mb-4"></select>
-                <button id="deleteAllButton" class="btn btn-error w-full">
-                    Apagar Todas Gravações
-                </button>
-                <div class="flex items-center justify-center space-x-4 mt-4">
-                    <input type="checkbox" id="noiseReduction" />
-                    <label for="noiseReduction">Reduz Ruído</label>
+      <!-- Controles e Listagem -->
+      <div class="flex-grow">
+        <div class="mb-4">
+          <label for="microphoneSelect" class="block mb-2"
+            >Selecionar Microfone:</label
+          >
+          <select
+            id="microphoneSelect"
+            class="w-full p-2 rounded bg-gray-700 mb-4"
+          ></select>
+          <button id="deleteAllButton" class="btn btn-error w-full">
+            Apagar Todas Gravações
+          </button>
+          <div class="flex items-center justify-center space-x-4 mt-4">
+            <input type="checkbox" id="noiseReduction" />
+            <label for="noiseReduction">Reduz Ruído</label>
 
-                    <input type="checkbox" id="echoCancellation" />
-                    <label for="echoCancellation">Cancela Eco</label>
-                </div>
-            </div>
-
-            <div class="flex space-x-4 mb-4">
-                <button id="recordButton" class="btn btn-primary w-1/2">
-                    Iniciar
-                </button>
-                <button id="stopButton" class="btn w-1/2" disabled>Parar</button>
-            </div>
-
-            <h2 class="text-xl mb-4 font-semibold text-center">Gravações:</h2>
-       <center>    <ul id="recordingsList" class="items-center justify-center space-y-2"></ul></center> 
+            <input type="checkbox" id="echoCancellation" />
+            <label for="echoCancellation">Cancela Eco</label>
+          </div>
         </div>
-        <!-- Footer -->
-        <footer class="mt-5 text-center">
-            Feito com ❤️ por <a target="_blank" href="https://wa.me/5521989328845?text=Olá%20gostaria%20de%20saber%20mais%20sobre%20serviços%20de%20TI">Miguel Kallemback</a>
-        </footer>
+
+        <div class="flex space-x-4 mb-4">
+          <button id="recordButton" class="btn btn-primary w-1/2">
+            Iniciar
+          </button>
+          <button id="stopButton" class="btn w-1/2" disabled>Parar</button>
+        </div>
+
+        <h2 class="text-xl mb-4 font-semibold text-center">Gravações:</h2>
+        <center>
+          <ul
+            id="recordingsList"
+            class="items-center justify-center space-x-10 space-y-5 w-full"
+          ></ul>
+        </center>
+      </div>
+      <!-- Footer -->
+      <footer class="mt-5 text-center">
+        Feito com ❤️ por
+        <a
+          target="_blank"
+          href="https://wa.me/5521989328845?text=Olá%20gostaria%20de%20saber%20mais%20sobre%20serviços%20de%20TI"
+          >Miguel Kallemback</a
+        >
+      </footer>
     </div>
 
     <script src="script.js"></script>
     <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-        .then((registration) => {
-          console.log('Service Worker registrado com sucesso:', registration);
-        })
-        .catch((error) => {
-          console.log('Erro ao registrar o Service Worker:', error);
-        });
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("sw.js")
+          .then((registration) => {
+            console.log("Service Worker registrado com sucesso:", registration);
+          })
+          .catch((error) => {
+            console.log("Erro ao registrar o Service Worker:", error);
+          });
       }
-      
     </script>
-    
   </body>
 </html>

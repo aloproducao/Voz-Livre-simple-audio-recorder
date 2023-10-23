@@ -38,5 +38,6 @@ body {
 }
 .recent-item {
     padding: 500px;
-    background-color: rgba(255, 0, 0, 0.74); /* Um fundo levemente mais escuro para destacar */
+    border-radius: 30px;
+    background-color: rgba(255, 0, 0, 0.342); /* Um fundo levemente mais escuro para destacar */
 }

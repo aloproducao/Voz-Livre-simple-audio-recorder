@@ -178,7 +178,7 @@ function listRecordings() {
       let listItem = document.createElement("tr");
 
       let nameCell = document.createElement("td");
-      nameCell.textContent = "rec " + id ;
+      nameCell.textContent = "Rec" + id ;
       
       listItem.appendChild(nameCell);
 

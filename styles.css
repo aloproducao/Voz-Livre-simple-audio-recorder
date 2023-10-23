@@ -41,7 +41,7 @@ body {
   background-color: rgba(255, 0, 0, 0); /* Um fundo levemente mais escuro para destacar */
 }
 .recent-item td:first-child::before {
-  content: "🆕 ";
+  content: "🆕";
 }
 #recordingsList {
   border-radius: 20px !important;

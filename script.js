@@ -28,7 +28,7 @@ function startAudioContext() {
 function populateMicrophoneList() {
   navigator.mediaDevices.enumerateDevices().then((devices) => {
     let micSelect = document.getElementById("microphoneSelect");
-    micSelect.innerHTML = ""; // Limpa a lista atual de dispositivos
+    micSelect.innerHTML = "";
     devices.forEach((device, index) => {
       if (device.kind === "audioinput") {
         let option = document.createElement("option");
@@ -37,7 +37,6 @@ function populateMicrophoneList() {
           device.label || "Microfone " + (micSelect.length + 1);
         micSelect.appendChild(option);
 
-        // Define o primeiro microfone como o padrão
         if (index === 0) {
           selectedMic = device.deviceId;
           micSelect.value = selectedMic;
@@ -51,7 +50,7 @@ navigator.mediaDevices
   .getUserMedia({ audio: true })
   .then((stream) => {
     console.log("Permissão ao microfone concedida");
-    populateMicrophoneList(); // Atualiza a lista de dispositivos após a permissão ser concedida
+    populateMicrophoneList();
   })
   .catch((err) => {
     console.error("Acesso ao microfone foi negado:", err);
@@ -100,7 +99,7 @@ function startRecording() {
 
     mediaRecorder.start();
     recordingSeconds = 0;
-    recordingInterval = setInterval(updateRecordingDuration, 1000); // Inicie o contador
+    recordingInterval = setInterval(updateRecordingDuration, 1000);
 
     updateVUMeter();
 
@@ -114,7 +113,7 @@ function stopRecording() {
     mediaRecorder.stop();
     document.getElementById("recordButton").disabled = false;
     document.getElementById("stopButton").disabled = true;
-    clearInterval(recordingInterval); // Pare o contador
+    clearInterval(recordingInterval);
   }
 }
 
@@ -130,20 +129,17 @@ function updateRecordingDuration() {
 function updateVUMeter() {
   requestAnimationFrame(updateVUMeter);
 
-  // Pega os dados de frequência
   analyser.getByteFrequencyData(dataArray);
 
   let values = dataArray.reduce((acc, value) => acc + value, 0);
   let average = values / dataArray.length;
 
-  // Converte o valor médio para dB
   let dBValue = 20 * Math.log10(average);
   let normalizedValue = Math.max(0, (dBValue + 100) / 100);
 
   document.getElementById("vuMeter").style.height = normalizedValue * 50 + "%";
 }
 
-// Configurando o IndexedDB
 let db;
 let request = indexedDB.open("audioRecordings", 1);
 
@@ -171,7 +167,7 @@ function listRecordings() {
   let store = transaction.objectStore("recordings");
   let cursorRequest = store.openCursor();
 
-  let lastItem; // Variável para armazenar o último item
+  let lastItem;
 
   cursorRequest.onsuccess = function (event) {
     let cursor = event.target.result;
@@ -190,6 +186,7 @@ function listRecordings() {
       let stopButton = document.createElement("button");
       let downloadButton = document.createElement("button");
       let deleteButton = document.createElement("button");
+      let shareButton = document.createElement("button");
 
       playButton.textContent = "▶️";
       playButton.className =
@@ -203,6 +200,15 @@ function listRecordings() {
       deleteButton.textContent = "❌";
       deleteButton.className =
         "border border-gray-300 text-gray-300 hover:bg-gray-700 px-1 py-1 rounded";
+
+      let shareIcon = document.createElement("i");
+      shareIcon.className = "fa fa-share-alt-square";
+      shareIcon.setAttribute("aria-hidden", "true");
+
+      shareButton.appendChild(shareIcon);
+      shareButton.appendChild(document.createTextNode(""));
+      shareButton.className =
+        "border border-gray-300 text-gray-300 hover:bg-gray-700 mr-1 px-1 py-1 rounded";
 
       let audio;
 
@@ -241,19 +247,36 @@ function listRecordings() {
         deleteRecording(id);
       });
 
+      shareButton.addEventListener("click", () => {
+        if (navigator.share) {
+          let file = new File([recording], "recording" + id + ".wav", {
+            type: "audio/wav",
+          });
+          navigator
+            .share({
+              files: [file],
+              title: "Compartilhar Gravação",
+              text: "Aqui está a gravação que fiz.",
+            })
+            .catch((error) => console.error("Erro ao compartilhar:", error));
+        } else {
+          console.warn("Seu navegador não suporta a API Web Share.");
+        }
+      });
+
       actionCell.appendChild(playButton);
       actionCell.appendChild(stopButton);
       actionCell.appendChild(downloadButton);
       actionCell.appendChild(deleteButton);
+      actionCell.appendChild(shareButton);
       listItem.appendChild(actionCell);
 
       recordingsList.appendChild(listItem);
 
-      lastItem = listItem; // Atualize o último item
+      lastItem = listItem;
 
       cursor.continue();
     } else {
-      // Depois que todos os itens forem listados, destaque o último item
       if (lastItem) {
         lastItem.classList.add("recent-item");
       }

@@ -275,8 +275,9 @@ function listRecordings() {
       recordingsList.appendChild(listItem);
 
       lastItem = listItem;
-
+      setTimeout(() => listItem.classList.add('show'), 2);
       cursor.continue();
+   
     } else {
       if (lastItem) {
         lastItem.classList.add("recent-item");

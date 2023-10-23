@@ -23,9 +23,10 @@ body {
   bottom: 0;
 }
 #principal {
-  max-width: 600px;
+  margin: 1em;
   background-color: #0e0e0ede;
-  border-radius: 40px;
+  border-radius: 20px;
+  padding: 1em;
 }
 #recordingDuration {
   color: #ffae00;
@@ -50,4 +51,11 @@ body {
 }
 table {
   width: 100%;
+}
+#recordingsList tr {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+#recordingsList tr.show {
+  opacity: 1;
 }

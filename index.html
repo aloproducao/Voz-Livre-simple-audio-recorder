@@ -50,21 +50,17 @@
       class="container p-5 rounded-lg shadow-lg flex flex-col"
     >
       <!-- Seção do Logo e VU Meter -->
-      <div class="flex items-center justify-center space-x-4 mb-4">
-        <img src="logo.png" alt="Ícone Voz Livre" class="icon" />
+<div class="flex items-center justify-center space-x-4 mb-4 relative">
+  <img src="logo.png" alt="Ícone Voz Livre" class="icon" />
 
-        <!-- VU Meter -->
-        <div
-          id="vuMeterContainer"
-          class="relative w-1/4 h-4 bg-gray-700 rounded"
-        >
-          <div
-            id="vuMeter"
-            class="absolute left-0 h-full bg-red-600 rounded-r"
-          ></div>
-        </div>
-      </div>
+  <!-- VU Meter -->
+  <div id="vuMeterContainer" class="absolute top-0 right-0 w-1/4 h-4 bg-gray-700 rounded z-10">
+      <div id="vuMeter" class="absolute left-0 h-full bg-red-600 rounded-r"></div>
+  </div> 
+</div>
+
       <!-- Tempo de Gravação -->
+    
       <div id="recordingDuration" class="text-center mb-4">00:00</div>
       <button
         class="btn glass w-1/2 text-white"
@@ -96,7 +92,7 @@
           </div>
         </div>
 
-        <div class="flex space-x-4 mb-4">
+        <div class="flex space-x-4 mb-4 p-3 center">
           <button id="recordButton" class="btn btn-primary w-1/2">
             Iniciar
           </button>

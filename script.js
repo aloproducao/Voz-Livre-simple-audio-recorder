@@ -178,7 +178,8 @@ function listRecordings() {
       let listItem = document.createElement("tr");
 
       let nameCell = document.createElement("td");
-      nameCell.textContent = "rec" + id + ".wav";
+      nameCell.textContent = "rec " + id ;
+      
       listItem.appendChild(nameCell);
 
       let actionCell = document.createElement("td");
@@ -190,16 +191,16 @@ function listRecordings() {
 
       playButton.textContent = "▶️";
       playButton.className =
-        "border border-gray-300 text-gray-300 hover:bg-gray-700 mr-1 px-1 py-1 rounded";
+        " text-gray-300 hover:bg-gray-700 mr-1 px-1 py-1 rounded";
       stopButton.textContent = "⏹️";
       stopButton.className =
-        "border border-gray-300 text-gray-300 hover:bg-gray-700 mr-1 px-1 py-1 rounded";
+        " text-gray-300 hover:bg-gray-700 mr-1 px- py-2 rounded";
       downloadButton.textContent = "Baixar";
       downloadButton.className =
-        "border border-gray-300 text-gray-300 hover:bg-gray-700 mr-1 px-1 py-1 rounded";
+        " text-gray-300 hover:bg-gray-700 mr-1 px-1 py-1 rounded";
       deleteButton.textContent = "❌";
       deleteButton.className =
-        "border border-gray-300 text-gray-300 hover:bg-gray-700 px-1 py-1 rounded";
+        " text-gray-300 hover:bg-gray-700 px-1 py-1 rounded";
 
       let shareIcon = document.createElement("i");
       shareIcon.className = "fa fa-share-alt-square";

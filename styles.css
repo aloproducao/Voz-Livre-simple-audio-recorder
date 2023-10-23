@@ -36,18 +36,16 @@ body {
 }
 .recent-item {
   border-radius: 30px !important;
-
-  background-color: rgba(
-    255,
-    0,
-    0,
-    0.418
-  ); /* Um fundo levemente mais escuro para destacar */
+  font-weight: bolder;
+  color: #00d9ff;
+  background-color: rgba(255, 0, 0, 0); /* Um fundo levemente mais escuro para destacar */
 }
-
+.recent-item td:first-child::before {
+  content: "🆕 ";
+}
 #recordingsList {
   border-radius: 20px !important;
-  background-color: rgba(129, 0, 0, 0.342) !important;
+  background-color: rgba(129, 0, 0, 0.349) !important;
   size-adjust: inherit !important;
 }
 table {

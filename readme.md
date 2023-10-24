@@ -4,7 +4,7 @@
 ![logo](https://github.com/aloproducao/Voz-Livre/assets/43450424/a1f2d604-59e4-4948-abe9-102260841d21)
 
 ## Description
-![image](https://github.com/aloproducao/Voz-Livre/assets/43450424/c79b5dbb-b7ae-4890-8362-2eb27ed34a57)
+![image](https://github.com/aloproducao/Voz-Livre/assets/43450424/230382f0-3f15-4fd4-8561-eccccb923cf5)
 
 **VozLivre** is an audio recording platform designed to run on mobile devices. Developed by **Miguel Kallemback**, this recorder was envisioned to provide a straightforward and efficient solution for day-to-day recordings, especially in live productions. One of the main advantages of **VozLivre** is its clean interface, free of advertisements, ensuring the focus is always on recording.
 

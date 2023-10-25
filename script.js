@@ -1,5 +1,4 @@
 let selectedMic = null;
-let stream = null;
 let chunks = [];
 let mediaRecorder = null;
 let audioContext;
@@ -47,18 +46,14 @@ function populateMicrophoneList() {
   });
 }
 
-
 navigator.mediaDevices
   .getUserMedia({ audio: true })
-  .then((streamData) => {
-    stream = streamData;
+  .then((stream) => {
     console.log("Permissão ao microfone concedida");
     populateMicrophoneList();
   })
   .catch((err) => {
     console.error("Acesso ao microfone foi negado:", err);
-  });
-
   });
 
 function saveRecording(blob) {
@@ -326,40 +321,3 @@ function deleteRecording(id) {
     }
   };
 }
-
-function populateOutputDeviceList() {
-  navigator.mediaDevices.enumerateDevices().then((devices) => {
-    let outputSelect = document.getElementById("outputSelect");
-    outputSelect.innerHTML = "";
-    devices.forEach((device) => {
-      if (device.kind === "audiooutput") {
-        let option = document.createElement("option");
-        option.value = device.deviceId;
-        option.innerText = device.label || "Dispositivo de Saída " + (outputSelect.length + 1);
-        outputSelect.appendChild(option);
-      }
-    });
-  });
-}
-populateOutputDeviceList();
-
-let audioMonitorSource = null;
-let audioMonitorGainNode = null;
-
-document.getElementById("monitorButton").addEventListener("click", function() {
-  if (audioMonitorSource) {
-    // Stop monitoring
-    audioMonitorSource.disconnect(audioMonitorGainNode);
-    audioMonitorGainNode.disconnect(audioContext.destination);
-    audioMonitorSource = null;
-    this.innerText = "Monitorar Áudio (Desligado)";
-  } else {
-    // Start monitoring
-    audioMonitorSource = audioContext.createMediaStreamSource(stream);
-    audioMonitorGainNode = audioContext.createGain();
-    audioMonitorGainNode.gain.value = 1; // Adjust the volume if needed
-    audioMonitorSource.connect(audioMonitorGainNode);
-    audioMonitorGainNode.connect(audioContext.destination);
-    this.innerText = "Monitorar Áudio (Ligado)";
-  }
-});

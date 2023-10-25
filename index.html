@@ -1,125 +1,78 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VozLivre: Gravador de Áudio Móvel Sem Anúncios</title>
-    <link rel="manifest" href="manifest.json" />
-
-    <!-- Meta tags de SEO -->
-    <meta
-      name="description"
-      content="Gravador de áudio móvel sem anúncios, ideal para produções ao vivo e gravações diárias."
-    />
-    <meta
-      name="keywords"
-      content="gravador, áudio, móvel, sem anúncios, produção ao vivo, gravações diárias, VozLivre, Miguel Kallemback"
-    />
-    <!-- FontAwesome via CDN -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/daisyui@3.9.3/dist/full.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-
-  <body
-    class="bg-gray-900 text-white flex items-center justify-center min-h-screen"
-  >
-    <div
-      id="installBanner"
-      style="
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VozLivre: Gravador de Áudio Móvel Sem Anúncios</title>
+<link href="manifest.json" rel="manifest"/>
+<!-- Meta tags de SEO -->
+<meta content="Gravador de áudio móvel sem anúncios, ideal para produções ao vivo e gravações diárias." name="description"/>
+<meta content="gravador, áudio, móvel, sem anúncios, produção ao vivo, gravações diárias, VozLivre, Miguel Kallemback" name="keywords"/>
+<!-- FontAwesome via CDN -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.3/dist/full.css" rel="stylesheet" type="text/css"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="styles.css" rel="stylesheet"/>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+<div id="installBanner" style="
         display: none;
         background-color: #333;
         padding: 10px;
         text-align: center;
-      "
-    >
-      <p>Deseja instalar este aplicativo em seu dispositivo?</p>
-      <button onclick="installApp()">Instalar</button>
-    </div>
-
-    <div
-      id="principal"
-      class="container p-5 rounded-lg shadow-lg flex flex-col"
-    >
-      <!-- Seção do Logo e VU Meter -->
-<div class="flex items-center justify-center space-x-4 mb-4 relative">
-  <img src="logo.png" alt="Ícone Voz Livre" class="icon" />
-
-  <!-- VU Meter -->
-  <div id="vuMeterContainer" class="absolute top-0 right-0 w-1/4 h-4 bg-gray-700 rounded z-10">
-      <div id="vuMeter" class="absolute left-0 h-full bg-red-600 rounded-r"></div>
-  </div> 
+      ">
+<p>Deseja instalar este aplicativo em seu dispositivo?</p>
+<button onclick="installApp()">Instalar</button>
 </div>
-
-      <!-- Tempo de Gravação -->
-    
-      <div id="recordingDuration" class="text-center mb-4">00:00</div>
-      <button
-        class="btn glass w-1/2 text-white"
-        style="color: white; display: none"
-        onclick="startAudioContext()"
-      >
+<div class="container p-5 rounded-lg shadow-lg flex flex-col" id="principal">
+<!-- Seção do Logo e VU Meter -->
+<div class="flex items-center justify-center space-x-4 mb-4 relative">
+<img alt="Ícone Voz Livre" class="icon" src="logo.png"/>
+<!-- VU Meter -->
+<div class="absolute top-0 right-0 w-1/4 h-4 bg-gray-700 rounded z-10" id="vuMeterContainer">
+<div class="absolute left-0 h-full bg-red-600 rounded-r" id="vuMeter"></div>
+</div>
+</div>
+<!-- Tempo de Gravação -->
+<div class="text-center mb-4" id="recordingDuration">00:00</div>
+<button class="btn glass w-1/2 text-white" onclick="startAudioContext()" style="color: white; display: none">
         Iniciar VU
       </button>
-
-      <!-- Controles e Listagem -->
-      <div class="flex-grow">
-        <div class="mb-4">
-          <label for="microphoneSelect" class="block mb-2"
-            >Selecionar Microfone:</label
-          >
-          <select
-            id="microphoneSelect"
-            class="w-full p-2 rounded bg-gray-700 mb-4"
-          ></select>
-          <button id="deleteAllButton" class="btn btn-error w-full">
+<!-- Controles e Listagem -->
+<div class="flex-grow">
+<div class="mb-4">
+<label class="block mb-2" for="microphoneSelect">Selecionar Microfone:</label>
+<select class="w-full p-2 rounded bg-gray-700 mb-4" id="microphoneSelect"></select>
+<button class="btn btn-error w-full" id="deleteAllButton">
             Apagar Todas Gravações
           </button>
-          <div class="flex items-center justify-center space-x-4 mt-4">
-            <input type="checkbox" id="noiseReduction" />
-            <label for="noiseReduction">Reduz Ruído</label>
-
-            <input type="checkbox" id="echoCancellation" />
-            <label for="echoCancellation">Cancela Eco</label>
-          </div>
-        </div>
-
-        <div class="flex space-x-4 mb-4 p-3 center">
-          <button id="recordButton" class="btn btn-primary w-1/2">
+<div class="flex items-center justify-center space-x-4 mt-4">
+<input id="noiseReduction" type="checkbox"/>
+<label for="noiseReduction">Reduz Ruído</label>
+<input id="echoCancellation" type="checkbox"/>
+<label for="echoCancellation">Cancela Eco</label>
+</div>
+</div><div class="mb-4"><label for="outputSelect">Selecionar Dispositivo de Saída:</label><select class="w-full p-2 rounded bg-gray-700 mb-4" id="outputSelect"></select></div><div class="flex space-x-4 mb-4 p-3 center"><button class="btn w-full" id="monitorButton">Monitorar Áudio (Desligado)</button></div>
+<div class="flex space-x-4 mb-4 p-3 center">
+<button class="btn btn-primary w-1/2" id="recordButton">
             Iniciar
           </button>
-          <button id="stopButton" class="btn w-1/2" disabled>Parar</button>
-        </div>
-
-        <h2 class="text-xl mb-4 font-semibold text-center">Gravações:</h2>
-        <center>
-          <ul
-            id="recordingsList"
-            class="w-full"
-          ></ul>
-        </center>
-      </div>
-      <!-- Footer -->
-      <footer class="mt-5 text-center">
+<button class="btn w-1/2" disabled="" id="stopButton">Parar</button>
+</div>
+<h2 class="text-xl mb-4 font-semibold text-center">Gravações:</h2>
+<center>
+<ul class="w-full" id="recordingsList"></ul>
+</center>
+</div>
+<!-- Footer -->
+<footer class="mt-5 text-center">
         Feito com ❤️ por
-        <a
-          target="_blank"
-          href="https://wa.me/5521989328845?text=Olá%20gostaria%20de%20saber%20mais%20sobre%20serviços%20de%20TI"
-          >Miguel Kallemback</a
-        >
-      </footer>
-    </div>
-
-    <script src="script.js"></script>
-    <script>
+        <a href="https://wa.me/5521989328845?text=Olá%20gostaria%20de%20saber%20mais%20sobre%20serviços%20de%20TI" target="_blank">Miguel Kallemback</a>
+</footer>
+</div>
+<script src="script.js"></script>
+<script>
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker
           .register("sw.js")
@@ -131,5 +84,5 @@
           });
       }
     </script>
-  </body>
+</body>
 </html>

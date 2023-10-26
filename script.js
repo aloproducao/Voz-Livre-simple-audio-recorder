@@ -8,6 +8,38 @@ let source;
 let recordingInterval = null;
 let recordingSeconds = 0;
 let selectedOutput = null;
+let monitoring = false;  // Inicialmente, o monitoramento está desligado
+let audioMonitor = null;
+
+document.getElementById("monitorAudioButton").addEventListener("click", () => {
+    if (!selectedMic) return;
+
+    if (!monitoring) {  // Se o monitoramento estiver desligado
+        let constraints = {
+            audio: {
+                deviceId: selectedMic
+            },
+        };
+
+        navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+            audioMonitor = new Audio();
+            audioMonitor.srcObject = stream;
+            audioMonitor.setSinkId(selectedOutput);
+            audioMonitor.play();
+
+            monitoring = true;  // Atualize o estado para ligado
+            document.getElementById("monitorAudioButton").innerText = "Desligar Monitoramento";
+        });
+    } else {  // Se o monitoramento estiver ligado
+        if (audioMonitor) {
+            audioMonitor.pause();
+            audioMonitor = null;
+        }
+
+        monitoring = false;  // Atualize o estado para desligado
+        document.getElementById("monitorAudioButton").innerText = "Monitorar Áudio";
+    }
+});
 
 function populateOutputList() {
     navigator.mediaDevices.enumerateDevices().then((devices) => {

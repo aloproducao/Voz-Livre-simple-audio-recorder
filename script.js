@@ -69,7 +69,7 @@ document.getElementById("monitorAudioButton").addEventListener("click", () => {
         monitorAudioInstance.play();
     });
 });
-);
+
 
 // Chamar a função para preencher a lista de saídas de áudio.
 populateOutputList();

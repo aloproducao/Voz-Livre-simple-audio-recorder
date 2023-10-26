@@ -3,10 +3,98 @@ let chunks = [];
 let mediaRecorder = null;
 let audioContext;
 let analyser;
-let dataArray;
 let source;
 let recordingInterval = null;
 let recordingSeconds = 0;
+
+document.getElementById("recordButton").addEventListener("click", toggleRecording);
+
+function startAudioContext() {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioContext.createAnalyser();
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
+}
+
+function populateMicrophoneList() {
+    navigator.mediaDevices.enumerateDevices().then((devices) => {
+        const micSelect = document.getElementById("microphoneSelect");
+        micSelect.innerHTML = "";
+        devices.forEach((device, index) => {
+            if (device.kind === "audioinput") {
+                const option = document.createElement("option");
+                option.value = device.deviceId;
+                option.innerText = device.label || `Microfone ${micSelect.length + 1}`;
+                micSelect.appendChild(option);
+                if (index === 0) {
+                    selectedMic = device.deviceId;
+                    micSelect.value = selectedMic;
+                }
+            }
+        });
+    });
+}
+
+function saveRecording(blob) {
+    const transaction = db.transaction(["recordings"], "readwrite");
+    const store = transaction.objectStore("recordings");
+    store.add(blob).onsuccess = () => listRecordings();
+}
+
+function toggleRecording() {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        stopRecording();
+    } else {
+        startRecording();
+    }
+}
+
+function startRecording() {
+    startAudioContext();
+
+    if (!selectedMic) return;
+
+    const constraints = {
+        audio: {
+            deviceId: selectedMic,
+            noiseSuppression: true,
+            echoCancellation: true,
+        }
+    };
+
+    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+        mediaRecorder = new MediaRecorder(stream);
+        source = audioContext.createMediaStreamSource(stream);
+        source.connect(analyser);
+
+        mediaRecorder.ondataavailable = event => chunks.push(event.data);
+        mediaRecorder.onstop = () => {
+            const blob = new Blob(chunks, { type: "audio/wav" });
+            saveRecording(blob);
+            chunks = [];
+        };
+
+        mediaRecorder.start();
+        recordingInterval = setInterval(updateRecordingDuration, 1000);
+        document.getElementById("recordButton").textContent = "Parar";
+    });
+}
+
+function stopRecording() {
+    mediaRecorder.stop();
+    clearInterval(recordingInterval);
+    document.getElementById("recordButton").textContent = "Gravar";
+}
+
+function updateRecordingDuration() {
+    recordingSeconds++;
+    const minutes = Math.floor(recordingSeconds / 60);
+    const seconds = recordingSeconds % 60;
+    document.getElementById("recordingDuration").textContent = 
+        `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+populateMicrophoneList();
+
 
 document
   .getElementById("microphoneSelect")

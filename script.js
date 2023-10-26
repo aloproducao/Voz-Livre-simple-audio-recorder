@@ -7,6 +7,7 @@ let dataArray;
 let source;
 let recordingInterval = null;
 let recordingSeconds = 0;
+<<<<<<< HEAD
 let selectedOutput = null;
 let gainNode;
 
@@ -78,6 +79,8 @@ document.getElementById("monitorAudioButton").addEventListener("click", () => {
 
 // Chamar a função para preencher a lista de saídas de áudio.
 populateOutputList();
+=======
+>>>>>>> parent of d17c0d4 (teste)
 
 document
   .getElementById("microphoneSelect")

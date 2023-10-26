@@ -8,6 +8,7 @@ let source;
 let recordingInterval = null;
 let recordingSeconds = 0;
 let selectedOutput = null;
+let monitorAudioInstance = null;
 
 function populateOutputList() {
     navigator.mediaDevices.enumerateDevices().then((devices) => {
@@ -29,8 +30,15 @@ document.getElementById("outputSelect").addEventListener("change", (event) => {
     selectedOutput = event.target.value;
 });
 
+
 document.getElementById("monitorAudioButton").addEventListener("click", () => {
     if (!selectedMic) return;
+
+    // Se já tiver uma instância de áudio para monitoramento, pare-a
+    if (monitorAudioInstance) {
+        monitorAudioInstance.pause();
+        monitorAudioInstance = null;
+    }
 
     let constraints = {
         audio: {
@@ -39,12 +47,29 @@ document.getElementById("monitorAudioButton").addEventListener("click", () => {
     };
 
     navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-        let audio = new Audio();
-        audio.srcObject = stream;
-        audio.setSinkId(selectedOutput);
-        audio.play();
+        // Crie um contexto de áudio
+        let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Crie um source node a partir do stream
+        let source = audioContext.createMediaStreamSource(stream);
+
+        // Conecte o source node ao destino (os alto-falantes)
+        source.connect(audioContext.destination);
+
+        // Crie uma instância de áudio e defina o stream como sua fonte
+        monitorAudioInstance = new Audio();
+        monitorAudioInstance.srcObject = stream;
+
+        // Defina o dispositivo de saída
+        if (selectedOutput) {
+            monitorAudioInstance.setSinkId(selectedOutput);
+        }
+        
+        // Comece a reproduzir o áudio em tempo real
+        monitorAudioInstance.play();
     });
 });
+);
 
 // Chamar a função para preencher a lista de saídas de áudio.
 populateOutputList();

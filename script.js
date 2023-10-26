@@ -7,6 +7,47 @@ let dataArray;
 let source;
 let recordingInterval = null;
 let recordingSeconds = 0;
+let selectedOutput = null;
+
+function populateOutputList() {
+    navigator.mediaDevices.enumerateDevices().then((devices) => {
+        let outputSelect = document.getElementById("outputSelect");
+        outputSelect.innerHTML = "";
+        devices.forEach((device) => {
+            if (device.kind === "audiooutput") {
+                let option = document.createElement("option");
+                option.value = device.deviceId;
+                option.innerText =
+                    device.label || "Saída " + (outputSelect.length + 1);
+                outputSelect.appendChild(option);
+            }
+        });
+    });
+}
+
+document.getElementById("outputSelect").addEventListener("change", (event) => {
+    selectedOutput = event.target.value;
+});
+
+document.getElementById("monitorAudioButton").addEventListener("click", () => {
+    if (!selectedMic) return;
+
+    let constraints = {
+        audio: {
+            deviceId: selectedMic
+        },
+    };
+
+    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+        let audio = new Audio();
+        audio.srcObject = stream;
+        audio.setSinkId(selectedOutput);
+        audio.play();
+    });
+});
+
+// Chamar a função para preencher a lista de saídas de áudio.
+populateOutputList();
 
 document
   .getElementById("microphoneSelect")

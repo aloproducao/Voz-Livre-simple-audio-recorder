@@ -37,7 +37,14 @@ document.getElementById("outputSelect").addEventListener("change", (event) => {
     selectedOutput = event.target.value;
 });
 
+let monitoringAudio = null;
+
 document.getElementById("monitorAudioButton").addEventListener("click", () => {
+    if (monitoringAudio) {
+        monitoringAudio.pause();
+        monitoringAudio = null;
+        return; // Se já estiver monitorando, pare o monitoramento e retorne
+    }
     if (!selectedMic) return;
 
     let constraints = {
@@ -47,6 +54,21 @@ document.getElementById("monitorAudioButton").addEventListener("click", () => {
     };
 
     navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+        mediaRecorder = new MediaRecorder(stream);
+        source = audioContext.createMediaStreamSource(stream);
+        
+        gainNode = audioContext.createGain();
+        let volumeValue = document.getElementById("dynamicVolume").value;
+        gainNode.gain.setValueAtTime(volumeValue, audioContext.currentTime);
+        
+        source.connect(gainNode);
+        gainNode.connect(analyser);
+
+        // Se estiver monitorando, ajuste o volume do monitoramento também
+        if (monitoringAudio) {
+            let sourceMonitor = audioContext.createMediaStreamSource(monitoringAudio.srcObject);
+            sourceMonitor.connect(gainNode);
+        }
         let audio = new Audio();
         audio.srcObject = stream;
         audio.setSinkId(selectedOutput);
@@ -135,6 +157,21 @@ function startRecording() {
   };
 
   navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+        mediaRecorder = new MediaRecorder(stream);
+        source = audioContext.createMediaStreamSource(stream);
+        
+        gainNode = audioContext.createGain();
+        let volumeValue = document.getElementById("dynamicVolume").value;
+        gainNode.gain.setValueAtTime(volumeValue, audioContext.currentTime);
+        
+        source.connect(gainNode);
+        gainNode.connect(analyser);
+
+        // Se estiver monitorando, ajuste o volume do monitoramento também
+        if (monitoringAudio) {
+            let sourceMonitor = audioContext.createMediaStreamSource(monitoringAudio.srcObject);
+            sourceMonitor.connect(gainNode);
+        }
     mediaRecorder = new MediaRecorder(stream);
     source = audioContext.createMediaStreamSource(stream);
     source.connect(analyser);

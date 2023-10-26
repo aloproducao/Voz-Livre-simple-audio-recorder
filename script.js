@@ -7,6 +7,59 @@ let dataArray;
 let source;
 let recordingInterval = null;
 let recordingSeconds = 0;
+let selectedOutput = null;
+
+
+function populateOutputList() {
+    navigator.mediaDevices.enumerateDevices().then((devices) => {
+        let outputSelect = document.getElementById("outputSelect");
+        outputSelect.innerHTML = "";
+        devices.forEach((device) => {
+            if (device.kind === "audiooutput") {
+                let option = document.createElement("option");
+                option.value = device.deviceId;
+                option.innerText =
+                    device.label || "Saída " + (outputSelect.length + 1);
+                outputSelect.appendChild(option);
+            }
+        });
+    });
+}
+
+document.getElementById("outputSelect").addEventListener("change", (event) => {
+    selectedOutput = event.target.value;
+});
+
+
+
+document.getElementById("monitorAudioButton").addEventListener("click", () => {
+    if (!selectedMic) return;
+
+    let constraints = {
+        audio: {
+            deviceId: selectedMic
+        },
+    };
+
+    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+        // Crie um contexto de áudio
+        let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Crie um source node a partir do stream
+        let source = audioContext.createMediaStreamSource(stream);
+
+        // Conecte o source node ao destino (os alto-falantes)
+        source.connect(audioContext.destination);
+
+        // Defina o dispositivo de saída usando o setSinkId
+        if (selectedOutput && typeof audioContext.setSinkId === "function") {
+            audioContext.setSinkId(selectedOutput);
+        }
+    });
+});
+
+// Chamar a função para preencher a lista de saídas de áudio.
+populateOutputList();
 
 document
   .getElementById("microphoneSelect")

@@ -8,39 +8,15 @@ let source;
 let recordingInterval = null;
 let recordingSeconds = 0;
 let selectedOutput = null;
-let monitoring = false;  // Inicialmente, o monitoramento está desligado
-let audioMonitor = null;
+let gainNode;
 
-document.getElementById("monitorAudioButton").addEventListener("click", () => {
-    if (!selectedMic) return;
-
-    if (!monitoring) {  // Se o monitoramento estiver desligado
-        let constraints = {
-            audio: {
-                deviceId: selectedMic
-            },
-        };
-
-        navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-            audioMonitor = new Audio();
-            audioMonitor.srcObject = stream;
-            audioMonitor.setSinkId(selectedOutput);
-            audioMonitor.play();
-
-            monitoring = true;  // Atualize o estado para ligado
-            document.getElementById("monitorAudioButton").innerText = "Desligar Monitoramento";
-        });
-    } else {  // Se o monitoramento estiver ligado
-        if (audioMonitor) {
-            audioMonitor.stop();
-            audioMonitor = null;
-        }
-
-        monitoring = false;  // Atualize o estado para desligado
-        document.getElementById("monitorAudioButton").innerText = "Monitorar Áudio";
+document.getElementById("dynamicVolume").addEventListener("input", (event) => {
+    let volumeValue = event.target.value;
+    if (gainNode) {
+        gainNode.gain.setValueAtTime(volumeValue, audioContext.currentTime);
     }
+    document.getElementById("dynamicVolumeValue").textContent = Math.round(volumeValue * 100) + "%";
 });
-
 function populateOutputList() {
     navigator.mediaDevices.enumerateDevices().then((devices) => {
         let outputSelect = document.getElementById("outputSelect");
@@ -143,7 +119,8 @@ function startRecording() {
   startAudioContext();
 
   if (!selectedMic) return;
-
+  let autoGain = document.getElementById("autoGainControl").checked;
+  let volumeValue = document.getElementById("dynamicVolume").value;
   let noiseReduction = document.getElementById("noiseReduction").checked;
   let echoCancellation = document.getElementById("echoCancellation").checked;
 
@@ -152,6 +129,8 @@ function startRecording() {
       deviceId: selectedMic,
       noiseSuppression: noiseReduction,
       echoCancellation: echoCancellation,
+      autoGainControl: autoGain,
+
     },
   };
 
@@ -159,7 +138,12 @@ function startRecording() {
     mediaRecorder = new MediaRecorder(stream);
     source = audioContext.createMediaStreamSource(stream);
     source.connect(analyser);
-
+    gainNode = audioContext.createGain();
+    gainNode.gain.setValueAtTime(volumeValue, audioContext.currentTime);
+    
+    source = audioContext.createMediaStreamSource(stream);
+    source.connect(gainNode);
+    gainNode.connect(analyser);
     mediaRecorder.ondataavailable = (event) => {
       chunks.push(event.data);
     };

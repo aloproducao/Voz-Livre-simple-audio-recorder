@@ -3,98 +3,65 @@ let chunks = [];
 let mediaRecorder = null;
 let audioContext;
 let analyser;
+let dataArray;
 let source;
 let recordingInterval = null;
 let recordingSeconds = 0;
+let selectedOutput = null;
 
-document.getElementById("recordButton").addEventListener("click", toggleRecording);
 
-function startAudioContext() {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    analyser = audioContext.createAnalyser();
-    dataArray = new Uint8Array(analyser.frequencyBinCount);
-}
-
-function populateMicrophoneList() {
+function populateOutputList() {
     navigator.mediaDevices.enumerateDevices().then((devices) => {
-        const micSelect = document.getElementById("microphoneSelect");
-        micSelect.innerHTML = "";
-        devices.forEach((device, index) => {
-            if (device.kind === "audioinput") {
-                const option = document.createElement("option");
+        let outputSelect = document.getElementById("outputSelect");
+        outputSelect.innerHTML = "";
+        devices.forEach((device) => {
+            if (device.kind === "audiooutput") {
+                let option = document.createElement("option");
                 option.value = device.deviceId;
-                option.innerText = device.label || `Microfone ${micSelect.length + 1}`;
-                micSelect.appendChild(option);
-                if (index === 0) {
-                    selectedMic = device.deviceId;
-                    micSelect.value = selectedMic;
-                }
+                option.innerText =
+                    device.label || "Saída " + (outputSelect.length + 1);
+                outputSelect.appendChild(option);
             }
         });
     });
 }
 
-function saveRecording(blob) {
-    const transaction = db.transaction(["recordings"], "readwrite");
-    const store = transaction.objectStore("recordings");
-    store.add(blob).onsuccess = () => listRecordings();
-}
+document.getElementById("outputSelect").addEventListener("change", (event) => {
+    selectedOutput = event.target.value;
+});
 
-function toggleRecording() {
-    if (mediaRecorder && mediaRecorder.state !== "inactive") {
-        stopRecording();
-    } else {
-        startRecording();
-    }
-}
 
-function startRecording() {
-    startAudioContext();
 
+document.getElementById("monitorAudioButton").addEventListener("click", () => {
     if (!selectedMic) return;
 
-    const constraints = {
+    let constraints = {
         audio: {
-            deviceId: selectedMic,
-            noiseSuppression: true,
-            echoCancellation: true,
-        }
+            deviceId: selectedMic
+        },
     };
 
     navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-        mediaRecorder = new MediaRecorder(stream);
-        source = audioContext.createMediaStreamSource(stream);
-        source.connect(analyser);
+        // Crie um contexto de áudio
+        let audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-        mediaRecorder.ondataavailable = event => chunks.push(event.data);
-        mediaRecorder.onstop = () => {
-            const blob = new Blob(chunks, { type: "audio/wav" });
-            saveRecording(blob);
-            chunks = [];
-        };
+        // Crie um source node a partir do stream
+        let source = audioContext.createMediaStreamSource(stream);
 
-        mediaRecorder.start();
-        recordingInterval = setInterval(updateRecordingDuration, 1000);
-        document.getElementById("recordButton").textContent = "Parar";
+        // Conecte o source node ao destino (os alto-falantes)
+        source.connect(audioContext.destination);
+
+        // Defina o dispositivo de saída usando o setSinkId
+        if (selectedOutput && typeof audioContext.setSinkId === "function") {
+            audioContext.setSinkId(selectedOutput);
+        }
     });
-}
+});
+);
+);
 
-function stopRecording() {
-    mediaRecorder.stop();
-    clearInterval(recordingInterval);
-    document.getElementById("recordButton").textContent = "Gravar";
-}
-
-function updateRecordingDuration() {
-    recordingSeconds++;
-    const minutes = Math.floor(recordingSeconds / 60);
-    const seconds = recordingSeconds % 60;
-    document.getElementById("recordingDuration").textContent = 
-        `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-}
-
-populateMicrophoneList();
-
+// Chamar a função para preencher a lista de saídas de áudio.
+populateOutputList();
 
 document
   .getElementById("microphoneSelect")

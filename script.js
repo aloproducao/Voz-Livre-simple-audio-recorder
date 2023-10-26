@@ -32,7 +32,7 @@ document.getElementById("monitorAudioButton").addEventListener("click", () => {
         });
     } else {  // Se o monitoramento estiver ligado
         if (audioMonitor) {
-            audioMonitor.pause();
+            audioMonitor.stop();
             audioMonitor = null;
         }
 

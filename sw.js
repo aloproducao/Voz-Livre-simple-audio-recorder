@@ -1,5 +1,5 @@
 // Definindo os arquivos para armazenar em cache
-const CACHE_NAME = 'voz-livre-cache-v2';
+const CACHE_NAME = 'voz-livre-cache-v1';
 const urlsToCache = [
   '/',
   'styles.css',

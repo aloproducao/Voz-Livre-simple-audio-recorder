@@ -7,83 +7,6 @@ let dataArray;
 let source;
 let recordingInterval = null;
 let recordingSeconds = 0;
-<<<<<<< HEAD
-<<<<<<< HEAD
-let selectedOutput = null;
-let gainNode;
-
-document.getElementById("dynamicVolume").addEventListener("input", (event) => {
-    let volumeValue = event.target.value;
-    if (gainNode) {
-        gainNode.gain.setValueAtTime(volumeValue, audioContext.currentTime);
-    }
-    document.getElementById("dynamicVolumeValue").textContent = Math.round(volumeValue * 100) + "%";
-});
-function populateOutputList() {
-    navigator.mediaDevices.enumerateDevices().then((devices) => {
-        let outputSelect = document.getElementById("outputSelect");
-        outputSelect.innerHTML = "";
-        devices.forEach((device) => {
-            if (device.kind === "audiooutput") {
-                let option = document.createElement("option");
-                option.value = device.deviceId;
-                option.innerText =
-                    device.label || "Saída " + (outputSelect.length + 1);
-                outputSelect.appendChild(option);
-            }
-        });
-    });
-}
-
-document.getElementById("outputSelect").addEventListener("change", (event) => {
-    selectedOutput = event.target.value;
-});
-
-let monitoringAudio = null;
-
-document.getElementById("monitorAudioButton").addEventListener("click", () => {
-    if (monitoringAudio) {
-        monitoringAudio.pause();
-        monitoringAudio = null;
-        return; // Se já estiver monitorando, pare o monitoramento e retorne
-    }
-    if (!selectedMic) return;
-
-    let constraints = {
-        audio: {
-            deviceId: selectedMic
-        },
-    };
-
-    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-        mediaRecorder = new MediaRecorder(stream);
-        source = audioContext.createMediaStreamSource(stream);
-        
-        gainNode = audioContext.createGain();
-        let volumeValue = document.getElementById("dynamicVolume").value;
-        gainNode.gain.setValueAtTime(volumeValue, audioContext.currentTime);
-        
-        source.connect(gainNode);
-        gainNode.connect(analyser);
-
-        // Se estiver monitorando, ajuste o volume do monitoramento também
-        if (monitoringAudio) {
-            let sourceMonitor = audioContext.createMediaStreamSource(monitoringAudio.srcObject);
-            sourceMonitor.connect(gainNode);
-        }
-        let audio = new Audio();
-        audio.srcObject = stream;
-        audio.setSinkId(selectedOutput);
-        audio.play();
-    });
-});
-
-// Chamar a função para preencher a lista de saídas de áudio.
-populateOutputList();
-=======
->>>>>>> parent of d17c0d4 (teste)
-=======
->>>>>>> parent of d17c0d4 (teste)
 
 document
   .getElementById("microphoneSelect")
@@ -147,8 +70,7 @@ function startRecording() {
   startAudioContext();
 
   if (!selectedMic) return;
-  let autoGain = document.getElementById("autoGainControl").checked;
-  let volumeValue = document.getElementById("dynamicVolume").value;
+
   let noiseReduction = document.getElementById("noiseReduction").checked;
   let echoCancellation = document.getElementById("echoCancellation").checked;
 
@@ -157,36 +79,14 @@ function startRecording() {
       deviceId: selectedMic,
       noiseSuppression: noiseReduction,
       echoCancellation: echoCancellation,
-      autoGainControl: autoGain,
-
     },
   };
 
   navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-        mediaRecorder = new MediaRecorder(stream);
-        source = audioContext.createMediaStreamSource(stream);
-        
-        gainNode = audioContext.createGain();
-        let volumeValue = document.getElementById("dynamicVolume").value;
-        gainNode.gain.setValueAtTime(volumeValue, audioContext.currentTime);
-        
-        source.connect(gainNode);
-        gainNode.connect(analyser);
-
-        // Se estiver monitorando, ajuste o volume do monitoramento também
-        if (monitoringAudio) {
-            let sourceMonitor = audioContext.createMediaStreamSource(monitoringAudio.srcObject);
-            sourceMonitor.connect(gainNode);
-        }
     mediaRecorder = new MediaRecorder(stream);
     source = audioContext.createMediaStreamSource(stream);
     source.connect(analyser);
-    gainNode = audioContext.createGain();
-    gainNode.gain.setValueAtTime(volumeValue, audioContext.currentTime);
-    
-    source = audioContext.createMediaStreamSource(stream);
-    source.connect(gainNode);
-    gainNode.connect(analyser);
+
     mediaRecorder.ondataavailable = (event) => {
       chunks.push(event.data);
     };

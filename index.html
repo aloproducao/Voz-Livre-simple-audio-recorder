@@ -50,17 +50,23 @@
       class="container p-5 rounded-lg shadow-lg flex flex-col"
     >
       <!-- Seção do Logo e VU Meter -->
-<div class="flex items-center justify-center space-x-4 mb-4 relative">
-  <img src="logo.png" alt="Ícone Voz Livre" class="icon" />
+      <div class="flex items-center justify-center space-x-4 mb-4 relative">
+        <img src="logo.png" alt="Ícone Voz Livre" class="icon" />
 
-  <!-- VU Meter -->
-  <div id="vuMeterContainer" class="absolute top-0 right-0 w-1/4 h-4 bg-gray-700 rounded z-10">
-      <div id="vuMeter" class="absolute left-0 h-full bg-red-600 rounded-r"></div>
-  </div> 
-</div>
+        <!-- VU Meter -->
+        <div
+          id="vuMeterContainer"
+          class="absolute top-0 right-0 w-1/4 h-4 bg-gray-700 rounded z-10"
+        >
+          <div
+            id="vuMeter"
+            class="absolute left-0 h-full bg-red-600 rounded-r"
+          ></div>
+        </div>
+      </div>
 
       <!-- Tempo de Gravação -->
-    
+
       <div id="recordingDuration" class="text-center mb-4">00:00</div>
       <button
         class="btn glass w-1/2 text-white"
@@ -90,13 +96,18 @@
             <input type="checkbox" id="echoCancellation" />
             <label for="echoCancellation">Cancela Eco</label>
           </div>
-          <div class="mb-4">
+          <!-- TODO  <div class="mb-4">
             <label for="volumeControl">Volume: <span id="volumePercent">100%</span></label>
             <input type="range" id="volumeControl" class="range range-primary" min="0" max="2" step="0.01" value="1">
-          </div>
-          <select id="audioOutputSelect" class="w-full p-2 rounded bg-gray-700 mb-4"></select>
-<br>
-          <button id="monitorButton"  class="btn glass w-1/4 text-white">Monitorar Áudio</button>
+          </div> -->
+          <select
+            id="audioOutputSelect"
+            class="w-full p-2 rounded bg-gray-700 mb-4"
+          ></select>
+          <br />
+          <button id="monitorButton" class="btn glass w-full text-white">
+            Monitorar Áudio
+          </button>
         </div>
 
         <div class="flex space-x-4 mb-4 p-3 center">
@@ -105,14 +116,10 @@
           </button>
           <button id="stopButton" class="btn w-1/2" disabled>Parar</button>
         </div>
-     
 
         <h2 class="text-xl mb-4 font-semibold text-center">Gravações:</h2>
         <center>
-          <ul
-            id="recordingsList"
-            class="w-full"
-          ></ul>
+          <ul id="recordingsList" class="w-full"></ul>
         </center>
       </div>
       <!-- Footer -->

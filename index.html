@@ -90,6 +90,13 @@
             <input type="checkbox" id="echoCancellation" />
             <label for="echoCancellation">Cancela Eco</label>
           </div>
+          <div class="mb-4">
+            <label for="volumeControl">Volume: <span id="volumePercent">100%</span></label>
+            <input type="range" id="volumeControl" class="range range-primary" min="0" max="2" step="0.01" value="1">
+          </div>
+          <select id="audioOutputSelect" class="w-full p-2 rounded bg-gray-700 mb-4"></select>
+<br>
+          <button id="monitorButton"  class="btn glass w-1/4 text-white">Monitorar Áudio</button>
         </div>
 
         <div class="flex space-x-4 mb-4 p-3 center">
@@ -98,6 +105,7 @@
           </button>
           <button id="stopButton" class="btn w-1/2" disabled>Parar</button>
         </div>
+     
 
         <h2 class="text-xl mb-4 font-semibold text-center">Gravações:</h2>
         <center>

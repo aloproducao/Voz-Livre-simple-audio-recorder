@@ -2,8 +2,6 @@
 const CACHE_NAME = 'voz-livre-cache-v1';
 const urlsToCache = [
   '/',
-  'styles.css',
-  'script.js',
   'logo.png',
   'https://cdn.jsdelivr.net/npm/daisyui@3.9.3/dist/full.css',
   'https://cdn.tailwindcss.com'

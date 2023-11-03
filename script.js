@@ -7,7 +7,7 @@ let dataArray;
 let source;
 let recordingInterval = null;
 let recordingSeconds = 0;
-
+let gainNode = null;
 document
   .getElementById("microphoneSelect")
   .addEventListener("change", (event) => {
@@ -70,13 +70,13 @@ function startRecording() {
   startAudioContext();
 
   if (!selectedMic) return;
-
+  gainNode = audioContext.createGain();
   let noiseReduction = document.getElementById("noiseReduction").checked;
   let echoCancellation = document.getElementById("echoCancellation").checked;
 
   let constraints = {
     audio: {
-      deviceId: selectedMic,
+      deviceId: { exact: selectedMic },
       noiseSuppression: noiseReduction,
       echoCancellation: echoCancellation,
     },
@@ -85,7 +85,35 @@ function startRecording() {
   navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
     mediaRecorder = new MediaRecorder(stream);
     source = audioContext.createMediaStreamSource(stream);
-    source.connect(analyser);
+
+    // Cria um nó de ganho para controlar o volume do monitoramento
+    let gainNode = audioContext.createGain();
+    
+    // Conecta o source ao nó de ganho
+    source.connect(gainNode);
+
+    // Conecta o nó de ganho ao analisador
+    gainNode.connect(analyser);
+    
+    // Conecta o nó de ganho ao destino (alto-falantes)
+    gainNode.connect(audioContext.destination); // Conecta ao destino para monitorar o áudio
+
+    // Inicialmente, defina o ganho para 0 para evitar feedback
+    gainNode.gain.value = 0;
+
+    // Adiciona a função de controle de monitoramento
+    document.getElementById('monitorButton').addEventListener('click', function() {
+      // Alterna entre monitorar e não monitorar
+      gainNode.gain.value = gainNode.gain.value > 0 ? 0 : 1;
+      this.textContent = gainNode.gain.value > 0 ? 'Desligar Monitor' : 'Monitorar Áudio';
+    });
+    document.getElementById('volumeControl').addEventListener('input', function() {
+      let volume = this.value;
+      gainNode.gain.value = volume; // Atualiza o texto com a porcentagem do volume
+      let volumePercent = document.getElementById('volumePercent');
+      volumePercent.textContent = (volume * 100).toFixed(0) + '%'; // Arredonda para o inteiro mais próximo
+    });
+  
 
     mediaRecorder.ondataavailable = (event) => {
       chunks.push(event.data);
@@ -105,8 +133,11 @@ function startRecording() {
 
     document.getElementById("recordButton").disabled = true;
     document.getElementById("stopButton").disabled = false;
+  }).catch((error) => {
+    console.error("Erro ao acessar o microfone:", error);
   });
 }
+
 
 function stopRecording() {
   if (mediaRecorder && mediaRecorder.state !== "inactive") {
@@ -321,3 +352,61 @@ function deleteRecording(id) {
     }
   };
 }
+
+// Função para listar dispositivos de saída de áudio
+function listAudioOutputDevices() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+    console.log("Este navegador não suporta a listagem de dispositivos de mídia.");
+    return;
+  }
+
+  navigator.mediaDevices.enumerateDevices()
+    .then(devices => {
+      let audioOutputSelect = document.getElementById('audioOutputSelect');
+      audioOutputSelect.innerHTML = ''; // Limpa o seletor de dispositivos de saída
+      devices.forEach(device => {
+        if (device.kind === 'audiooutput') {
+          let option = document.createElement('option');
+          option.value = device.deviceId;
+          // O texto do dispositivo de saída é definido para o rótulo do dispositivo ou para um valor padrão se não estiver disponível
+          option.text = device.label || `Speaker ${audioOutputSelect.options.length + 1}`;
+          audioOutputSelect.appendChild(option);
+        }
+      });
+    })
+    .catch(error => {
+      console.error('Erro ao listar dispositivos de saída de áudio:', error);
+    });
+}
+
+// Função para mudar a saída de áudio para o dispositivo selecionado
+function changeAudioOutput(event) {
+  let audioElement = document.getElementById('meuElementoDeAudio'); // Ajuste para corresponder ao id do seu elemento de áudio
+  if (!audioElement) {
+    console.error('Elemento de áudio não encontrado!');
+    return;
+  }
+
+  let sinkId = event.target.value;
+
+  if (typeof audioElement.sinkId !== 'undefined') {
+    audioElement.setSinkId(sinkId)
+      .then(() => {
+        console.log(`Áudio agora está sendo redirecionado para: ${sinkId}`);
+      })
+      .catch(error => {
+        console.warn('Erro ao definir sinkId do dispositivo de áudio:', error);
+      });
+  } else {
+    console.warn('Seu navegador não suporta a definição de sinkId para dispositivos de saída de áudio.');
+  }
+}
+
+
+// Evento para listar dispositivos de saída quando o documento for carregado
+document.addEventListener('DOMContentLoaded', (event) => {
+  listAudioOutputDevices(); // Chama a função para listar dispositivos
+});
+
+// Evento para mudar a saída de áudio quando um dispositivo for selecionado no seletor
+document.getElementById('audioOutputSelect').addEventListener('change', changeAudioOutput);

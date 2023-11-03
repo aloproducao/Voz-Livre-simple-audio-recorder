@@ -78,6 +78,10 @@
 
       <!-- Controles e Listagem -->
       <div class="flex-grow">
+        <div class="mb-4" style="opacity: 1;">
+          <label for="volumeControl"><small style="color: rgb(124, 124, 124);">Volume (Beta) <span id="volumePercent">100%</span></label></small>
+          <input type="range" id="volumeControl" class="range range-primary" min="0" max="2" step="0.01" value="1">
+        </div> 
         <div class="mb-4">
           <label for="microphoneSelect" class="block mb-2"
             >Selecionar Microfone:</label
@@ -96,10 +100,7 @@
             <input type="checkbox" id="echoCancellation" />
             <label for="echoCancellation">Cancela Eco</label>
           </div>
-       <div class="mb-4">
-            <label for="volumeControl">Volume: <span id="volumePercent">100%</span></label>
-            <input type="range" id="volumeControl" class="range range-primary" min="0" max="2" step="0.01" value="1">
-          </div> 
+   
           <select
             id="audioOutputSelect"
             class="w-full p-2 rounded bg-gray-700 mb-4"

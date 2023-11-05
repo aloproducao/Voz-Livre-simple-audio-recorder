@@ -8,6 +8,7 @@ let source;
 let recordingInterval = null;
 let recordingSeconds = 0;
 let gainNode = null;
+let isMonitoring = false;
 document
   .getElementById("microphoneSelect")
   .addEventListener("change", (event) => {
@@ -87,7 +88,7 @@ function startRecording() {
     source = audioContext.createMediaStreamSource(stream);
 
     // Cria um nó de ganho para controlar o volume do monitoramento
-    let gainNode = audioContext.createGain();
+    gainNode = audioContext.createGain();
     
     // Conecta o source ao nó de ganho
     source.connect(gainNode);
@@ -100,18 +101,21 @@ function startRecording() {
 
     // Inicialmente, defina o ganho para 0 para evitar feedback
     gainNode.gain.value = 0;
-
+   
     // Adiciona a função de controle de monitoramento
     document.getElementById('monitorButton').addEventListener('click', function() {
       // Alterna entre monitorar e não monitorar
       gainNode.gain.value = gainNode.gain.value > 0 ? 0 : 1;
       this.textContent = gainNode.gain.value > 0 ? 'Desligar Monitor' : 'Monitorar Áudio';
+      isMonitoring = !isMonitoring;
     });
     document.getElementById('volumeControl').addEventListener('input', function() {
-      let volume = this.value;
-      gainNode.gain.value = volume; // Atualiza o texto com a porcentagem do volume
-      let volumePercent = document.getElementById('volumePercent');
-      volumePercent.textContent = (volume * 100).toFixed(0) + '%'; // Arredonda para o inteiro mais próximo
+      if (isMonitoring) { // Só permite alterar o volume se o monitoramento estiver ativo
+        let volume = this.value;
+        gainNode.gain.value = volume; // Atualiza o ganho de acordo com o controle de volume
+        let volumePercent = document.getElementById('volumePercent');
+        volumePercent.textContent = (volume * 100).toFixed(0) + '%'; // Atualiza o texto com a porcentagem do volume
+      }
     });
   
 
@@ -146,6 +150,12 @@ function stopRecording() {
     document.getElementById("stopButton").disabled = true;
     document.getElementById("recordingIndicator").classList.add("hidden");
     clearInterval(recordingInterval);
+   
+    if (isMonitoring) {
+      gainNode.gain.value = 0; // Desliga o ganho
+      document.getElementById('monitorButton').textContent = 'Monitorar Áudio';
+      isMonitoring = false; // Atualiza o estado do monitoramento
+    }
   }
 }
 

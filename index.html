@@ -24,7 +24,7 @@
     />
     <meta
       name="keywords"
-      content="gravador, áudio, móvel, sem anúncios, produção ao vivo, gravações diárias, VozLivre, Miguel Kallemback"
+      content="gravador,gravador audio gratis, recorder, free, áudio, móvel, sem anúncios, produção ao vivo, gravações diárias, VozLivre, Miguel Kallemback"
     />
     <!-- FontAwesome via CDN -->
     <link
@@ -62,7 +62,7 @@
     >
       <!-- Seção do Logo e VU Meter -->
       <div class="flex items-center justify-center space-x-4 mb-4 relative">
-        <img src="logo.png" alt="Ícone Voz Livre" class="icon" />
+        
 
         <!-- VU Meter -->
         <div
@@ -76,9 +76,23 @@
         </div>
       </div>
 
-      <!-- Tempo de Gravação -->
+     <!-- Tempo de Gravação -->
+<div class="mb-4 flex flex-col items-center justify-center">
+  <div class="flex items-center justify-center space-x-2">
+    <img style="display: none;" src="logo.png" alt="Ícone Voz Livre" class="icon w-12 h-12" />
+    <span id="recordingDuration" class="font-semibold">00:00</span>
+    <div id="recordingIndicator" class="hidden">
+      
+      <svg width="30" height="30" viewBox="0 0 20 20">
+        <circle cx="10" cy="10" r="5" fill="red" class="pulse"/>
+        <small class="text-gray-300 pulse">Gravando</small>
+      </svg>
+    </div>
+  </div>
+<small class="text-gray-300">Voz livre - Seu gravador de áudio profissional🎤</small>
+</div>
 
-      <div id="recordingDuration" class="text-center mb-4">00:00</div>
+      
       <button
         class="btn glass w-1/2 text-white"
         style="color: white; display: none"
@@ -86,12 +100,12 @@
       >
         Iniciar VU
       </button>
-
+      
       <!-- Controles e Listagem -->
       <div class="flex-grow">
         <div class="mb-4" style="opacity: 1;">
           <label for="volumeControl"><small style="color: rgb(124, 124, 124);">Volume (Beta) <span id="volumePercent">100%</span></label></small>
-          <input type="range" id="volumeControl" class="range range-primary" min="0" max="2" step="0.01" value="1">
+          <input type="range" id="volumeControl" class="range range-xs range-success" min="0" max="2" step="0.01" value="1">
         </div> 
         <div class="mb-4">
           <label for="microphoneSelect" class="block mb-2"
@@ -101,7 +115,7 @@
             id="microphoneSelect"
             class="w-full p-2 rounded bg-gray-700 mb-4"
           ></select>
-          <button id="deleteAllButton" class="btn btn-error w-full">
+          <button id="deleteAllButton" class="btn btn-outline btn-accent w-full">
             Apagar Todas Gravações
           </button>
           <div class="flex items-center justify-center space-x-4 mt-4">
@@ -112,7 +126,9 @@
             <label for="echoCancellation">Cancela Eco</label>
           </div>
           <br>
-   
+          <label for="microphoneSelect" class="block mb-2"
+          >Monitor de audio:</label
+        >
           <select
             id="audioOutputSelect"
             class="w-full p-2 rounded bg-gray-700 mb-4"
@@ -122,7 +138,7 @@
             Monitorar Áudio
           </button>
         </div>
-
+      
         <div class="flex space-x-4 mb-4 p-3 center">
           <button id="recordButton" class="btn btn-primary w-1/2">
             Iniciar
@@ -130,7 +146,9 @@
           <button id="stopButton" class="btn w-1/2" disabled>Parar</button>
         </div>
 
-        <h2 class="text-xl mb-4 font-semibold text-center">Gravações:</h2>
+        <h2 class="text-xl mb-4 font-semibold text-center">Gravações:
+          </h2>
+        
         <center>
           <ul id="recordingsList" class="w-full"></ul>
         </center>

@@ -73,7 +73,7 @@ function startRecording() {
   gainNode = audioContext.createGain();
   let noiseReduction = document.getElementById("noiseReduction").checked;
   let echoCancellation = document.getElementById("echoCancellation").checked;
-
+  document.getElementById("recordingIndicator").classList.remove("hidden");
   let constraints = {
     audio: {
       deviceId: { exact: selectedMic },
@@ -144,6 +144,7 @@ function stopRecording() {
     mediaRecorder.stop();
     document.getElementById("recordButton").disabled = false;
     document.getElementById("stopButton").disabled = true;
+    document.getElementById("recordingIndicator").classList.add("hidden");
     clearInterval(recordingInterval);
   }
 }
@@ -320,7 +321,12 @@ function listRecordings() {
     }
   };
 }
-
+document.getElementById("deleteAllButton").addEventListener("click", function() {
+  let confirmDelete = confirm("Ei, tem certeza que deseja apagar todas as gravações? Esta ação não pode ser desfeita.");
+  if (confirmDelete) {
+    deleteAllRecordings();
+  }
+});
 document
   .getElementById("deleteAllButton")
   .addEventListener("click", deleteAllRecordings);

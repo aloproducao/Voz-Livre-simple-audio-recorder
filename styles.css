@@ -51,7 +51,7 @@ body {
 }
 #recordingDuration {
   color: #ffae00;
-  font-size: 2.4rem;
+  font-size: 4.4rem;
 }
 .icon {
   height: 10em;
@@ -90,4 +90,55 @@ table {
 #recordingsList tr.show {
   opacity: 1;
   transition: padding 0.3s ease;
+}
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.pulse {
+  animation: pulse 1s infinite ease-in-out;
+}
+
+.hidden {
+  display: none;
+}
+#monitorButton {
+  color: #ffffff;
+}
+
+#monitorButton:hover {
+  color: #000;
+}
+
+
+#deleteAllButton:hover {
+  color: #ececec !important;
+  background-color: #da6363 !important;
+  border: #000;
+  text-shadow: 1px 1px 1px 1px #000000 !important;
+}
+
+#deleteAllButton {
+  color: #ffffff !important;
+  background-color: #000 !important;
+  border: #da6363 solid 2px !important;
+}
+#recordButton {
+ 
+}
+#recordButton:hover {
+  color: #ffffff;
+  background-color: #1b1b1b;
+}
+#stopButton {
+ 
+}
+#stopButton:hover {
+  color: #ffffff;
+  background-color: #1b1b1b;
 }

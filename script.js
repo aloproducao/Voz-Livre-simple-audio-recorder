@@ -9,6 +9,7 @@ let recordingInterval = null;
 let recordingSeconds = 0;
 let gainNode = null;
 let isMonitoring = false;
+
 document
   .getElementById("microphoneSelect")
   .addEventListener("change", (event) => {
@@ -150,7 +151,7 @@ function stopRecording() {
     document.getElementById("stopButton").disabled = true;
     document.getElementById("recordingIndicator").classList.add("hidden");
     clearInterval(recordingInterval);
-   
+    window.location.reload(); // Resolve bug monitoramento.
     if (isMonitoring) {
       gainNode.gain.value = 0; // Desliga o ganho
       document.getElementById('monitorButton').textContent = 'Monitorar Áudio';
